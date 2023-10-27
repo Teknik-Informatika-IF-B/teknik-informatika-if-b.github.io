@@ -14,8 +14,7 @@
         <div class="container">
             <div class="row mt-4 text-center">
                 <div class="col-12">
-                    <img src="https://i.ibb.co/52WGDNH/logo-mikroskil-lowres.jpg"
-                        class="img-fluid hide" style="max-width: 80%;max-height: 100px;" loading="lazy">
+                    <img src="https://i.ibb.co/52WGDNH/logo-mikroskil-lowres.jpg" class="img-fluid hide" style="max-width: 80%;max-height: 100px;" loading="lazy">
                     <hr>
                     <h1>Teknik Informatika (IF-B)</h1>
                     <hr>
@@ -45,7 +44,23 @@
                     <hr>
                 </div>
             </div>
-            <div class="row mt-4 mb-5">
+            <!-- <div class="row">
+                <div class="col-12 text-center mb-2">
+                    <h4>Pengaturan</h4>
+                </div>
+                <div class="col-12 px-4">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" data-toggle="toggle" id="toggle-one">
+                            Notifikasi sebelum masuk kelas
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div> -->
+            <div class="row mt-2 mb-5">
                 <b class="text-center">DISCLAIMER</b>
                 <p class="text-justify">Informasi dan fungsionalitas yang ditawarkan oleh alat ini hanya untuk tujuan
                     informasi umum. Tidak ada jaminan apa pun, baik secara eksplisit maupun tersirat, mengenai
@@ -71,7 +86,7 @@
      * Saran dan masukkan:
      * - Sistem Notifikasi
      */
-    
+
     /**
      * Returns the week number for this date.  dowOffset is the day of week the week
      * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
@@ -268,8 +283,8 @@
         timerId = makeId(6);
 
         return {
-            html: 
-            `<div class="col-lg-6 col-md-12">
+            html:
+                `<div class="col-lg-6 col-md-12">
                 <div class="card shadow-sm mb-3 bg-white rounded text-center">
                     <div class="card-body">
                         <h2 style="margin-bottom: 0;" class="card-title">${data.name}</h2>
@@ -318,6 +333,12 @@
             displayElement.innerHTML = `${(tolerated) ? 'Sisa toleransi' : 'Mulai dalam'}: ${days}${hours}:${minutes}:${seconds}`;
 
             if (--timer < 0) {
+                if (timer < 300) {
+                    sendNotification("Kurang dari 5 menit lagi!", {
+                        body: `Kelasmu akan dimulai dalam ${minutes}:${seconds}`
+                    });
+                }
+                
                 displayElement.innerHTML = `Kelas dimulai.`;
                 if (tolerance - timer < 0) {
                     tolerated = true;
@@ -337,7 +358,14 @@
         return Math.floor((end.getTime() - (new Date).getTime()) / 1000);
     }
 
-    window.addEventListener("load", (e) => { 
+    function sendNotification(title, options = {}) {
+        let def = {
+            icon: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg',
+        };
+        var notification = new Notification(title, {...def, ...options})
+    }
+
+    window.addEventListener("load", (e) => {
         const noClassNotice = `<div class="col-12 text-center text-danger"><h4>Tidak ada kelas</h4></div>`;
 
         // Handle today's classes
@@ -347,12 +375,14 @@
             todayClassElement = document.getElementById('todayClasses');
         todayDateElement.innerHTML = parseDateAsText(todayDate);
 
-        today.forEach(c => {{
-            let card = renderCard(c),
-                duration = secondsUntil(new Date(`${todayDate.toLocaleDateString('en-CA')} ${c.time}:00`));
-            todayClassElement.innerHTML += card.html;
-            startTimer(duration, intervalIds.length, c.timeTolerance, card.timer);
-        }});
+        today.forEach(c => {
+            {
+                let card = renderCard(c),
+                    duration = secondsUntil(new Date(`${todayDate.toLocaleDateString('en-CA')} ${c.time}:00`));
+                todayClassElement.innerHTML += card.html;
+                startTimer(duration, intervalIds.length, c.timeTolerance, card.timer);
+            }
+        });
 
         if (today.length < 1) {
             todayClassElement.innerHTML = noClassNotice;
@@ -377,15 +407,30 @@
             tries++;
         };
 
-        upcoming.forEach(c => {{
-            let card = renderCard(c),
-                duration = secondsUntil(new Date(`${upcomingDate.toLocaleDateString('en-CA')} ${c.time}:00`));
-            upcomingClassElement.innerHTML += card.html;
-            startTimer(duration, intervalIds.length, c.timeTolerance, card.timer);
-        }});
+        upcoming.forEach(c => {
+            {
+                let card = renderCard(c),
+                    duration = secondsUntil(new Date(`${upcomingDate.toLocaleDateString('en-CA')} ${c.time}:00`));
+                upcomingClassElement.innerHTML += card.html;
+                startTimer(duration, intervalIds.length, c.timeTolerance, card.timer);
+            }
+        });
 
         if (upcoming.length < 1) {
             upcomingClassElement.innerHTML = noClassNotice;
+        }
+
+        // Handle notifications
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            sendNotification("Contoh notifikasi!");
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    sendNotification("Contoh notifikasi!");
+                }
+            });
         }
     });
 </script>
