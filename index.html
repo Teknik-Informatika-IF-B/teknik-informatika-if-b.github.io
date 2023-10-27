@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teknik Informatika IF-B Sore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <div class="container">
+            <div class="row mt-4 text-center">
+                <div class="col-12">
+                    <img src="https://www.mikroskil.ac.id/img/mikroskil-logo-universitas.fa51bd02.webp"
+                        class="img-fluid hide" style="max-width: 80%;max-height: 100px;">
+                    <hr>
+                    <h1>Teknik Informatika (IF-B)</h1>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center mb-2">
+                    <h2>Kelas hari ini</h2>
+                    <p><b id="todayDate">Loading...</b></p>
+                </div>
+                <div id="todayClasses"></div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center mb-2">
+                    <h2>Kelas yang akan datang</h2>
+                    <p><b id="upcomingDate">Loading...</b></p>
+                </div>
+                <div id="upcomingClasses"></div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row mt-4 mb-5">
+                <b class="text-center">DISCLAIMER</b>
+                <p class="text-justify">Informasi dan fungsionalitas yang ditawarkan oleh alat ini hanya untuk tujuan
+                    informasi umum. Tidak ada jaminan apa pun, baik secara eksplisit maupun tersirat, mengenai
+                    kelengkapan, akurasi, kehandalan, kesesuaian, atau ketersediaan alat ini atau informasi yang
+                    disediakannya. Setiap kepercayaan yang Anda letakkan pada informasi tersebut sepenuhnya atas risiko
+                    Anda sendiri.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-2 bg-light fixed-bottom">
+        <div class="container">
+            <span class="text-muted"><small>Dibuat oleh Jason N.</small></span>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+<script>
+
+    /**
+     * Returns the week number for this date.  dowOffset is the day of week the week
+     * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
+     * the week returned is the ISO 8601 week number.
+     * @param int dowOffset
+     * @return int
+     */
+    Date.prototype.getWeek = function (dowOffset) {
+        /*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.meanfreepath.com */
+        dowOffset = typeof (dowOffset) == 'number' ? dowOffset : 0; //default dowOffset to zero
+        var newYear = new Date(this.getFullYear(), 0, 1);
+        var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+        day = (day >= 0 ? day : day + 7);
+        var daynum = Math.floor((this.getTime() - newYear.getTime() -
+            (this.getTimezoneOffset() - newYear.getTimezoneOffset()) * 60000) / 86400000) + 1;
+        var weeknum;
+        //if the year starts before the middle of a week
+        if (day < 4) {
+            weeknum = Math.floor((daynum + day - 1) / 7) + 1;
+            if (weeknum > 52) {
+                nYear = new Date(this.getFullYear() + 1, 0, 1);
+                nday = nYear.getDay() - dowOffset;
+                nday = nday >= 0 ? nday : nday + 7;
+                /*if the next year starts before the middle of
+                  the week, it is week #1 of that year*/
+                weeknum = nday < 4 ? 1 : 53;
+            }
+        }
+        else {
+            weeknum = Math.floor((daynum + day - 1) / 7);
+        }
+        return weeknum;
+    };
+
+    /**
+     * NOTE: SkipWeeks hanya boleh ditambahkan dalam 1 minggu dari libur. 
+     */
+    const CLASSES_DATA = {
+        /**
+         * @field string name Name of the class
+         * @field int day Day of the class (1 = Monday, 2 = Tuesday, so on)
+         * @field string time Time when the class starts
+         * @field int timeTolerance Time Tolerance after class starts
+         * @field array location Where the class is being held (0 = Unknown, 1 = Onsite, 2 = Online, 3 = Holiday)
+         * @field array skipWeeks 
+         */
+        SistemOtomasiPerkantoran: {
+            name: "Sistem Otomasi Perkantoran",
+            day: 1,
+            classroom: "A.P2/L3 - Lab 5",
+            time: "17:30",
+            timeTolerance: 15 * 60,
+            location: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            skipWeeks: [],
+        },
+        TeoriPemrogramanKomputer: {
+            name: "Pemrograman Komputer TEORI",
+            day: 2,
+            classroom: "B.T3/L2",
+            time: "17:45",
+            timeTolerance: 15 * 60,
+            location: [1, 2, 2, 2, 1, 1, 1, 2, 1, 1, 2, 2, 2, 1, 1, 2],
+            skipWeeks: [],
+        },
+        PraktekPemrogramanKomputer: {
+            name: "Pemrograman Komputer PRAKTEK",
+            day: 3,
+            classroom: "A.P2/L2 - Lab 2",
+            time: "17:30",
+            timeTolerance: 15 * 60,
+            location: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            skipWeeks: [],
+        },
+        PengembanganKarakter: {
+            name: "Pengembangan Karakter",
+            day: 3,
+            classroom: "B.T3/L2",
+            time: "19:30",
+            timeTolerance: 10 * 60,
+            location: [1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2],
+            skipWeeks: [],
+        },
+        WawasanInformatika: {
+            name: "Wawasan Informatika",
+            day: 4,
+            classroom: "B.T3/L2",
+            time: "17:45",
+            timeTolerance: 15 * 60,
+            location: [1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 1, 2, 0],
+            skipWeeks: [3],
+        },
+        PemikiranDesain: {
+            name: "Pemikiran Desain",
+            day: 5,
+            classroom: "B.T3/L2",
+            time: "17:45",
+            timeTolerance: 15 * 60,
+            location: [1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 2, 2],
+            skipWeeks: [],
+        },
+    }
+
+    function translateLocation(location) {
+        return {
+            0: {
+                text: "TIDAK ADA DATA",
+                color: "danger"
+            },
+            1: {
+                text: "LANGSUNG",
+                color: "success"
+            },
+            2: {
+                text: "MAYA",
+                color: "primary"
+            },
+            3: {
+                text: "LIBUR",
+                color: "black"
+            }
+        }[location] ?? location;
+    }
+
+    function getStamp(offset = 0) {
+        // Set offset for the day class started
+        const date = new Date(2023, 9, 18);
+        date.setDate((new Date).getDate() + offset);
+
+        // Week starts from week 38 (18 Sept 2023)
+        const startingWeek = 38;
+        d_week = date.getWeek();
+        if (d_week < startingWeek) {
+            // Won't alert the user if it has passed to the next semester
+            alert("Data is out of date!\nPlease contact maintainers or push the latest schedules.\nData valid for: 1st Semester Angkatan 2023 Mikroskil");
+        }
+        d_week = (d_week >= 38) ? d_week - startingWeek : d_week;
+
+        return {
+            day: date.getDay(),
+            week: d_week + 1
+        }
+    }
+
+    function makeId(length) {
+        /**
+         * Credit: https://stackoverflow.com/a/1349426
+         */
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
+        }
+        return result;
+    }
+
+    /**
+     * Get Class Details
+     * @param int offset Date offset from today (eg. 1 would mean tomorrow)
+     */
+    function getClassDetails(offset = 0) {
+        let stamp = getStamp(offset),
+            classes = [],
+            today = [];
+        Object.values(CLASSES_DATA).forEach(o => {
+            if (o.day === stamp.day) {
+                o.holiday = o.skipWeeks.includes(stamp.week);
+                classes.push(o);
+            }
+        });
+        classes.forEach(c => {
+            // Code 3 means holiday
+            let skipWeeksLength = c.skipWeeks.length,
+                location = (c.holiday) ? 3 : c.location[stamp.week - 1 - skipWeeksLength];
+            today.push({
+                name: c.name,
+                time: c.time,
+                timeTolerance: c.timeTolerance,
+                offset: (c.holiday) ? skipWeeksLength - 1 : skipWeeksLength, // Holiday means it's today or in the future, so subtrace 1 from offset
+                stamp: stamp,
+                location: translateLocation(location)
+            })
+        });
+        return today;
+    }
+
+    function renderCard(data) {
+        let offset = (data.offset) ? `<li class="list-group-item text-danger">Offset ${data.offset} minggu</li>` : '';
+        timerId = makeId(6);
+
+        return {
+            html: 
+            `<div class="col-lg-6 col-md-12">
+                <div class="card shadow-sm mb-3 bg-white rounded text-center">
+                    <div class="card-body">
+                        <h2 style="margin-bottom: 0;" class="card-title">${data.name}</h2>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-${data.location.color}"><b class="text-white">${data.location.text} (PERT. ${data.stamp.week - data.offset})</b></li>
+                        <li class="list-group-item">Jam Masuk: ${data.time}</li>
+                        <li class="list-group-item" id="timer_${timerId}">Processing...</li>
+                        ${offset}
+                    </ul>
+                </div>
+            </div>`,
+            timer: timerId
+        };
+    }
+
+    function parseDateAsText(date) {
+        let months = ["Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        let days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+        let day = days[date.getDay() - 1];
+        let month = months[date.getMonth() - 1];
+        return `${day}, ${date.getDate()} ${month} ${date.getFullYear()}`;
+    }
+
+    var intervalIds = [];
+    function startTimer(duration, index, tolerance, display) {
+        /**
+         * Credit: https://stackoverflow.com/a/20618517
+         * Credit: https://stackoverflow.com/a/27144669
+         */
+        var timer = duration, minutes, seconds, tolerated;
+        intervalIds.push(setInterval(function () {
+            days = Math.floor(timer / (60 * 60 * 24));
+            hours = Math.floor((timer % (60 * 60 * 24)) / (60 * 60));
+            minutes = Math.floor((timer % (60 * 60)) / (60));
+            seconds = Math.floor(timer % (60));
+
+            days = (days > 0) ? (days < 10 ? "0" + days : days) + ':' : '';
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = `${(tolerated) ? 'Sisa toleransi' : 'Mulai dalam'}: ${days}${hours}:${minutes}:${seconds}`;
+
+            if (--timer < 0) {
+                display.textContent = `Kelas telah dimulai.`;
+                if (tolerance - timer < 0) {
+                    tolerated = true;
+                }
+                if (!tolerated) {
+                    timer = tolerance;
+                    tolerated = true;
+                } else {
+                    display.textContent = `Kelas telah dimulai dan toleransi habis.`;
+                    clearInterval(intervalIds[index]);
+                }
+            }
+        }, 1000));
+    }
+
+    function secondsUntil(end) {
+        return Math.floor((end.getTime() - (new Date).getTime()) / 1000);
+    }
+
+    window.addEventListener("load", (e) => { 
+        const noClassNotice = `<div class="col-12 text-center text-danger"><h4>Tidak ada kelas</h4></div>`;
+
+        // Handle today's classes
+        var today = getClassDetails(),
+            todayDate = (new Date),
+            todayDateElement = document.getElementById('todayDate'),
+            todayClassElement = document.getElementById('todayClasses');
+        todayDateElement.innerHTML = parseDateAsText(todayDate);
+
+        today.forEach(c => {{
+            let card = renderCard(c),
+                duration = secondsUntil(new Date(`${todayDate.toLocaleDateString('en-CA')} ${c.time}:00`));
+            todayClassElement.innerHTML += card.html;
+            startTimer(duration, intervalIds.length, c.timeTolerance, document.querySelector(`#timer_${card.timer}`));
+        }});
+
+        if (today.length < 1) {
+            todayClassElement.innerHTML = noClassNotice;
+        }
+
+        // Handle next upcoming class
+        var upcoming = [],
+            tries = 1,
+            upcomingDate = null,
+            upcomingDateElement = document.getElementById('upcomingDate'),
+            upcomingClassElement = document.getElementById('upcomingClasses');
+
+        while (tries < 8) {
+            upcoming = getClassDetails(tries);
+            if (upcoming.length > 0) {
+                let date = (new Date);
+                date.setDate(date.getDate() + tries);
+                upcomingDate = date;
+                upcomingDateElement.innerHTML = parseDateAsText(upcomingDate);
+                break;
+            }
+            tries++;
+        };
+
+        upcoming.forEach(c => {{
+            let card = renderCard(c),
+                duration = secondsUntil(new Date(`${upcomingDate.toLocaleDateString('en-CA')} ${c.time}:00`));
+            upcomingClassElement.innerHTML += card.html;
+            startTimer(duration, intervalIds.length, c.timeTolerance, document.querySelector(`#timer_${card.timer}`));
+        }});
+
+        if (upcoming.length < 1) {
+            upcomingClassElement.innerHTML = noClassNotice;
+        }
+    });
+</script>
+
+</html>
