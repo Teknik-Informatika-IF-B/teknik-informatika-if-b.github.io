@@ -242,18 +242,21 @@
                 location = (c.holiday) ? 3 : c.location[stamp.week - 1 - skipWeeksLength];
             today.push({
                 name: c.name,
+                classroom: c.classroom,
                 time: c.time,
                 timeTolerance: c.timeTolerance,
                 offset: (c.holiday) ? skipWeeksLength - 1 : skipWeeksLength, // Holiday means it's today or in the future, so subtrace 1 from offset
                 stamp: stamp,
-                location: translateLocation(location)
+                location: translateLocation(location),
+                locationCode: location
             })
         });
         return today;
     }
 
     function renderCard(data) {
-        let offset = (data.offset) ? `<li class="list-group-item text-danger">Offset ${data.offset} minggu</li>` : '';
+        let offset = (data.offset) ? `<li class="list-group-item text-danger">Offset ${data.offset} minggu</li>` : '',
+            classroom = ([0, 1].includes(data.locationCode)) ? `<li class="list-group-item">Lokasi: <b>${data.classroom}</b></li>` : '';
         timerId = makeId(6);
 
         return {
@@ -265,6 +268,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-${data.location.color}"><b class="text-white">${data.location.text} (PERT. ${data.stamp.week - data.offset})</b></li>
+                        ${classroom}
                         <li class="list-group-item">Jam Masuk: ${data.time}</li>
                         <li class="list-group-item" id="timer_${timerId}">Processing...</li>
                         ${offset}
