@@ -317,6 +317,7 @@
          * Credit: https://stackoverflow.com/a/27144669
          */
         var timer = duration, days, hours, minutes, seconds, tolerated, displayElement;
+        var notified_1 = notified_5 = notified_15 = notified_30 = false;
         intervalIds.push(setInterval(function () {
             days = Math.floor(timer / (60 * 60 * 24));
             hours = Math.floor((timer % (60 * 60 * 24)) / (60 * 60));
@@ -333,9 +334,25 @@
             displayElement.innerHTML = `${(tolerated) ? 'Sisa toleransi' : 'Mulai dalam'}: ${days}${hours}:${minutes}:${seconds}`;
 
             if (--timer < 0) {
-                if (timer < 300) {
+                if (timer < 30 * 60 && timer > 15 * 60 && !notified_30) {
+                    notified_30 = true;
+                    sendNotification("Kurang dari 30 menit lagi!", {
+                        body: `Kelasmu akan dimulai dalam ${minutes}:${seconds}.`
+                    });
+                } else if (timer < 15 * 60 && timer > 5 * 60 && !notified_15) {
+                    notified_15 = true;
+                    sendNotification("Kurang dari 15 menit lagi!", {
+                        body: `Kelasmu akan dimulai dalam ${minutes}:${seconds}.`
+                    });
+                } else if (timer < 5 * 60 && timer > 1 * 60 && !notified_5) {
+                    notified_5 = true;
                     sendNotification("Kurang dari 5 menit lagi!", {
-                        body: `Kelasmu akan dimulai dalam ${minutes}:${seconds}`
+                        body: `Kelasmu akan dimulai dalam ${minutes}:${seconds}.`
+                    });
+                } else if (timer < 1 * 60 && timer > 0 && !notified_1) {
+                    notified_1 = true;
+                    sendNotification("Kurang dari 1 menit lagi!", {
+                        body: `Segera masuk kedalam kelas jika belum.`
                     });
                 }
                 
@@ -423,8 +440,6 @@
         // Handle notifications
         if (!("Notification" in window)) {
             alert("This browser does not support desktop notification");
-        } else if (Notification.permission === "granted") {
-            sendNotification("Contoh notifikasi!");
         } else if (Notification.permission !== "denied") {
             Notification.requestPermission().then((permission) => {
                 if (permission === "granted") {
