@@ -364,7 +364,7 @@
                     tolerated = true;
                 }
                 if (!tolerated) {
-                    timer = tolerance - timer;
+                    timer = tolerance + timer;
                     tolerated = true;
                 } else {
                     displayElement.textContent = `Kelas dimulai dan toleransi habis.`;
