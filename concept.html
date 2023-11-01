@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teknik Informatika IF-B Sore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <div class="container">
+            <div class="row mt-4 text-center">
+                <div class="col-12">
+                    <img src="https://i.ibb.co/52WGDNH/logo-mikroskil-lowres.jpg" class="img-fluid hide" style="max-width: 80%;max-height: 100px;" loading="lazy">
+                    <hr>
+                    <h1>Teknik Informatika (IF-B)</h1>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center mb-2">
+                    <h2>Kelas hari ini</h2>
+                    <p><b id="todayDate">Loading...</b></p>
+                </div>
+                <div class="col-12">
+                    <div id="todayClasses" class="row justify-content-center"></div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center mb-2">
+                    <h2>Kelas yang akan datang</h2>
+                    <p><b id="upcomingDate">Loading...</b></p>
+                </div>
+                <div class="col-12">
+                    <div id="upcomingClasses" class="row justify-content-center"></div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-12 text-center mb-2">
+                    <h4>Pengaturan</h4>
+                </div>
+                <div class="col-12 px-4">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" data-toggle="toggle" id="toggle-one">
+                            Notifikasi sebelum masuk kelas
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div> -->
+            <div class="row mt-2 mb-5">
+                <b class="text-center">DISCLAIMER</b>
+                <p class="text-justify">Informasi dan fungsionalitas yang ditawarkan oleh alat ini hanya untuk tujuan
+                    informasi umum. Tidak ada jaminan apa pun, baik secara eksplisit maupun tersirat, mengenai
+                    kelengkapan, akurasi, kehandalan, kesesuaian, atau ketersediaan alat ini atau informasi yang
+                    disediakannya. Setiap kepercayaan yang Anda letakkan pada informasi tersebut sepenuhnya atas risiko
+                    Anda sendiri.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-2 bg-light fixed-bottom">
+        <div class="container">
+            <span class="text-muted"><small>Dibuat oleh Jason N.</small></span>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+<script>
+    /**
+     * Returns the week number for this date.  dowOffset is the day of week the week
+     * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
+     * the week returned is the ISO 8601 week number.
+     * @param int dowOffset
+     * @return int
+     */
+    Date.prototype.getWeek = function (dowOffset) {
+        /*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.meanfreepath.com */
+        dowOffset = typeof (dowOffset) == 'number' ? dowOffset : 0; //default dowOffset to zero
+        var newYear = new Date(this.getFullYear(), 0, 1);
+        var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+        day = (day >= 0 ? day : day + 7);
+        var daynum = Math.floor((this.getTime() - newYear.getTime() -
+            (this.getTimezoneOffset() - newYear.getTimezoneOffset()) * 60000) / 86400000) + 1;
+        var weeknum;
+        //if the year starts before the middle of a week
+        if (day < 4) {
+            weeknum = Math.floor((daynum + day - 1) / 7) + 1;
+            if (weeknum > 52) {
+                nYear = new Date(this.getFullYear() + 1, 0, 1);
+                nday = nYear.getDay() - dowOffset;
+                nday = nday >= 0 ? nday : nday + 7;
+                /*if the next year starts before the middle of
+                  the week, it is week #1 of that year*/
+                weeknum = nday < 4 ? 1 : 53;
+            }
+        }
+        else {
+            weeknum = Math.floor((daynum + day - 1) / 7);
+        }
+        return weeknum;
+    };
+</script>
+
+</html>
