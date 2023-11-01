@@ -1,4 +1,41 @@
+/**
+ * Returns the week number for this date.  dowOffset is the day of week the week
+ * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
+ * the week returned is the ISO 8601 week number.
+ * @param int dowOffset
+ * @return int
+ */
+Date.prototype.getWeek = function (dowOffset) {
+    /*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.meanfreepath.com */
+    dowOffset = typeof (dowOffset) == 'number' ? dowOffset : 0; //default dowOffset to zero
+    var newYear = new Date(this.getFullYear(), 0, 1);
+    var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+    day = (day >= 0 ? day : day + 7);
+    var daynum = Math.floor((this.getTime() - newYear.getTime() -
+        (this.getTimezoneOffset() - newYear.getTimezoneOffset()) * 60000) / 86400000) + 1;
+    var weeknum;
+    //if the year starts before the middle of a week
+    if (day < 4) {
+        weeknum = Math.floor((daynum + day - 1) / 7) + 1;
+        if (weeknum > 52) {
+            nYear = new Date(this.getFullYear() + 1, 0, 1);
+            nday = nYear.getDay() - dowOffset;
+            nday = nday >= 0 ? nday : nday + 7;
+            /*if the next year starts before the middle of
+              the week, it is week #1 of that year*/
+            weeknum = nday < 4 ? 1 : 53;
+        }
+    }
+    else {
+        weeknum = Math.floor((daynum + day - 1) / 7);
+    }
+    return weeknum;
+};
+
 const SCHEDULE_DATA = {
+    validThru: "INSERT UNIX TIMESTAMP HERE AND CHECK LATER",
+    major: "Teknik Informatika",
+    class: "IF-B",
     classes: {
         /**
          * @field string name Name of the class
@@ -14,10 +51,12 @@ const SCHEDULE_DATA = {
             classroom: "A.P2/L3 - Lab 5",
             time: [
                 {
+                    slot: 1,
                     start: "17:30",
                     end: "19:10"
                 },
                 {
+                    slot: 3,
                     start: "19:30",
                     end: "21:00"
                 }
@@ -32,10 +71,12 @@ const SCHEDULE_DATA = {
             classroom: "B.T3/L2",
             time: [
                 {
+                    slot: 1,
                     start: "17:45",
                     end: "19:10"
                 },
                 {
+                    slot: 3,
                     start: "19:30",
                     end: "20:50"
                 }
@@ -50,6 +91,7 @@ const SCHEDULE_DATA = {
             classroom: "A.P2/L2 - Lab 2",
             time: [
                 {
+                    slot: 1,
                     start: "17:30",
                     end: "19:10"
                 }
@@ -64,6 +106,7 @@ const SCHEDULE_DATA = {
             classroom: "B.T3/L2",
             time: [
                 {
+                    slot: 3,
                     start: "19:30",
                     end: "20:50"
                 }
@@ -78,10 +121,12 @@ const SCHEDULE_DATA = {
             classroom: "B.T3/L2",
             time: [
                 {
+                    slot: 1,
                     start: "17:45",
                     end: "19:10"
                 },
                 {
+                    slot: 3,
                     start: "19:30",
                     end: "20:50"
                 }
@@ -96,10 +141,12 @@ const SCHEDULE_DATA = {
             classroom: "B.T3/L2",
             time: [
                 {
+                    slot: 1,
                     start: "17:45",
                     end: "19:10"
                 },
                 {
+                    slot: 3,
                     start: "19:30",
                     end: "20:50"
                 }
@@ -115,6 +162,7 @@ const SCHEDULE_DATA = {
             day: [1, 2, 3, 4, 5],
             time: [
                 {
+                    slot: 2,
                     start: "19:10",
                     end: "19:30"
                 }
@@ -153,11 +201,24 @@ var Schedulinator = {
             3: {
                 text: "LIBUR",
                 color: "black"
+            },
+            4: {
+                text: "UJIAN",
+                color: "danger"
             }
         }[locationId] ?? locationId;
     },
-    loadSchedule(schedule) {
-        this.schedule.all = schedule;
+    setSchedule(schedule) {
+        localStorage.setItem(`Schedulinator_schedules`, JSON.stringify(schedule));
+        this.loadSchedule(schedule);
+    },
+    loadSchedule() {
+        schedules = localStorage.getItem(`Schedulinator_schedules`);
+        if (null == schedules) {
+            alert("Schedule not loaded. Loading default schedule.");
+            this.setSchedule(SCHEDULE_DATA);
+        }
+        this.schedule.all = schedules;
     },
     randomId(length) {
         /**
@@ -201,5 +262,42 @@ var Schedulinator = {
             </div>`,
             timer: timerId
         };
+    },
+    getRelativeDayAndWeekFromDate(date) {
+        // Relative to the start of the class (18 Sept 2023)
+        const startingWeek = 38;
+        let currentWeek = date.getWeek();
+
+        if (currentWeek >= startingWeek) {
+            currentWeek -= startingWeek; // So we get week starting from index 0
+        } else if (currentWeek < startingWeek) {
+            currentWeek += 52 - startingWeek;// 52 weeks in a year
+        }
+
+        return {
+            day: date.getDay(),
+            week: currentWeek
+        }
+    },
+    getClassDetailsFromDate(date) {
+        let stamp = this.getRelativeDayAndWeekFromDate(date),
+            classInDay = [],
+            classToday = [];
+
+        let shouldShowBreaks = false;
+        classToday.forEach(c => {
+            if (["LANGSUNG"].includes(c.location)) {
+                shouldShowBreaks = true;
+            }
+        })
+
+    },
+    TEST_getRelativeDayAndWeekFromDate() {
+        for (let i = 0; i < 180; i++) {
+            let date = new Date;
+            date.setDate(date.getDate() + i);
+            stamp = this.getRelativeDayAndWeekFromDate(date);
+            console.log(date, stamp);
+        }
     }
 }
