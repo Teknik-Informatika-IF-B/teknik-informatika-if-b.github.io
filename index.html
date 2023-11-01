@@ -213,8 +213,10 @@
 
     function getStamp(offset = 0) {
         // Set offset for the day class started
-        const date = new Date(2023, 9, 18);
-        //date.setDate((new Date).getDate() + offset);
+        const date = (new Date);
+        date.setDate(date.getDate() + offset);
+        console.log("Searching for class in date:", date);
+        // date.setFullYear(date.getFullYear(), date.getMonth(), date.getDate() + offset);
 
         // Week starts from week 38 (18 Sept 2023)
         const startingWeek = 38;
@@ -416,31 +418,30 @@
             upcomingDateElement = document.getElementById('upcomingDate'),
             upcomingClassElement = document.getElementById('upcomingClasses');
 
-        // while (tries < 8) {
-        //     upcoming = getClassDetails(tries);
-        //     if (upcoming.length > 0) {
-        //         let date = (new Date);
-        //         date.setDate(date.getDate() + tries);
-        //         upcomingDate = date;
-        //         upcomingDateElement.innerHTML = parseDateAsText(upcomingDate);
-        //         break;
-        //     }
-        //     tries++;
-        // };
+        while (tries < 8) {
+            upcoming = getClassDetails(tries);
+            if (upcoming.length > 0) {
+                let date = (new Date);
+                date.setDate(date.getDate() + tries);
+                upcomingDate = date;
+                upcomingDateElement.innerHTML = parseDateAsText(upcomingDate);
+                break;
+            }
+            tries++;
+        };
 
-        // upcoming.forEach(c => {
-        //     {
-        //         let card = renderCard(c),
-        //             duration = secondsUntil(new Date(`${upcomingDate.toLocaleDateString('en-CA')} ${c.time}:00`));
-        //         upcomingClassElement.innerHTML += card.html;
-        //         startTimer(duration, intervalIds.length, c.timeTolerance, card.timer);
-        //     }
-        // });
+        upcoming.forEach(c => {
+            {
+                let card = renderCard(c),
+                    duration = secondsUntil(new Date(`${upcomingDate.toLocaleDateString('en-CA')} ${c.time}:00`));
+                upcomingClassElement.innerHTML += card.html;
+                startTimer(duration, intervalIds.length, c.timeTolerance, card.timer);
+            }
+        });
 
-        // if (upcoming.length < 1) {
-        //     upcomingClassElement.innerHTML = noClassNotice;
-        // }
-        upcomingClassElement.innerHTML = `<div class="col-12 text-center text-danger"><h4>Maintenance</h4></div>`
+        if (upcoming.length < 1) {
+            upcomingClassElement.innerHTML = noClassNotice;
+        }
 
         // Handle notifications
         if (!("Notification" in window)) {
