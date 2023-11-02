@@ -288,7 +288,9 @@ var Schedulinator = {
             classToday = [];
 
         Object.values(this.schedule.all).forEach(c => {
-            
+            if (c.day.includes(stamp.day)) {
+                classInDay.push(c);
+            }
         })
 
         let shouldShowBreaks = false;
