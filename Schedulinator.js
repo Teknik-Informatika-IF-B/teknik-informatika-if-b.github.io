@@ -52,7 +52,7 @@ const SCHEDULE_DATA = {
             time: [
                 {
                     slot: 1,
-                    start: "17:30",
+                    start: "17:0",
                     end: "19:10"
                 },
                 {
@@ -169,8 +169,20 @@ const SCHEDULE_DATA = {
             ]
         }
     },
-    examination: {
-
+    overrides: [
+        {
+            time_date: 1,
+            class: "PengembanganKarakter",
+            index: 1,
+        }
+    ],
+    occassion: {
+        mingguTenang: {
+            time: {
+                start: 1,
+                end: 1
+            }
+        }
     }
 }
 
