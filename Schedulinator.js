@@ -168,16 +168,25 @@ const SCHEDULE_DATA = {
                 }
             ]
         }
+    },
+    overrides: {
+        MingguTenang: {
+            start: 1,
+            end: 2
+        },
+        Exams: {
+            UTS: {
+                start: 1,
+                end: 2
+            }
+        }
     }
 }
 
 var Schedulinator = {
     date: (new Date),
-    schedule: {
-        today: {},
-        upcoming: {},
-        all: {}
-    },
+    data: {},
+    schedule: {},
     setDateByOffset(offset) {
         this.date.setDate(this.date.getDate() + offset);
     },
@@ -218,7 +227,7 @@ var Schedulinator = {
             alert("Schedule not loaded. Loading default schedule.");
             this.setSchedule(SCHEDULE_DATA);
         }
-        this.schedule.all = schedules;
+        this.data = schedules;
     },
     randomId(length) {
         /**
@@ -282,13 +291,29 @@ var Schedulinator = {
     getClassDetailsFromDate(date) {
         let stamp = this.getRelativeDayAndWeekFromDate(date),
             classInDay = [],
-            classToday = [];
+            classToday = {};
 
+        // Gather all classes for the day
+        Object.values(this.data.classes).forEach(c => {
+            if (c.day == stamp.day) {
+                c.isHoliday = c.skipWeeks.includes(stamp.week);
+                classInDay.push(c);
+            }
+        });
+        Object.values(this.data.breaks).forEach(c => {
+            if (c.day.includes(stamp.day)) {
+                classInDay.push(c);
+            }
+        });
+
+        // Parse all classes for the day
+        // And order them based on slots
         let shouldShowBreaks = false;
         classToday.forEach(c => {
             if (["LANGSUNG"].includes(c.location)) {
                 shouldShowBreaks = true;
             }
+
         })
 
     },
