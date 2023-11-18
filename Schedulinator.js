@@ -1,4 +1,4 @@
-/**
+0/**
  * Returns the week number for this date.  dowOffset is the day of week the week
  * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
  * the week returned is the ISO 8601 week number.
@@ -52,7 +52,7 @@ const SCHEDULE_DATA = {
             time: [
                 {
                     slot: 1,
-                    start: "17:30",
+                    start: "17:0",
                     end: "19:10"
                 },
                 {
@@ -293,21 +293,6 @@ var Schedulinator = {
             classInDay = [],
             classToday = {};
 
-        // Gather all classes for the day
-        Object.values(this.data.classes).forEach(c => {
-            if (c.day == stamp.day) {
-                c.isHoliday = c.skipWeeks.includes(stamp.week);
-                classInDay.push(c);
-            }
-        });
-        Object.values(this.data.breaks).forEach(c => {
-            if (c.day.includes(stamp.day)) {
-                classInDay.push(c);
-            }
-        });
-
-        // Parse all classes for the day
-        // And order them based on slots
         let shouldShowBreaks = false;
         classToday.forEach(c => {
             if (["LANGSUNG"].includes(c.location)) {
@@ -317,6 +302,7 @@ var Schedulinator = {
         })
 
     },
+
     TEST_getRelativeDayAndWeekFromDate() {
         for (let i = 0; i < 180; i++) {
             let date = new Date;
