@@ -177,7 +177,7 @@
             time: "17:45",
             timeTolerance: 15 * 60,
             location: [1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 1, 2, 0],
-            skipWeeks: [3],
+            skipWeeks: [],
         },
         PemikiranDesain: {
             name: "Pemikiran Desain",
@@ -220,6 +220,7 @@
 
         // Week starts from week 38 (18 Sept 2023)
         const startingWeek = 38;
+        const offsetMingguTenang = 1; // How many weeks is minggu tenang
         d_week = date.getWeek();
 
         if (d_week < startingWeek) {
@@ -230,7 +231,7 @@
 
         return {
             day: date.getDay(),
-            week: d_week + 1
+            week: d_week + 1 - offsetMingguTenang
         }
     }
 
