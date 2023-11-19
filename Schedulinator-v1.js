@@ -172,7 +172,16 @@ const SCHEDULE_DATA = {
     overrides: {
         MingguTenang: {
             start: 1,
-            end: 2
+            end: 2,
+            classes: [
+                {
+                    day: 1,
+                    week: 1,
+                    class: {
+                        'classDetails': 'a'
+                    }
+                }
+            ]
         },
         Exams: {
             UTS: {
