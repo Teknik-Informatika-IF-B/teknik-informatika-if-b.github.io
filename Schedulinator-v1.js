@@ -1,4 +1,4 @@
-0/**
+/**
  * Returns the week number for this date.  dowOffset is the day of week the week
  * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
  * the week returned is the ISO 8601 week number.
@@ -38,12 +38,12 @@ const SCHEDULE_DATA = {
     class: "IF-B",
     classes: {
         /**
-         * @field string name Name of the class
-         * @field int day Day of the class (1 = Monday, 2 = Tuesday, so on)
-         * @field string time Hour and minute when the class starts
-         * @field int timeTolerance Time Tolerance (in seconds) after class starts
-         * @field array location Where the class is being held (0 = Unknown, 1 = Onsite, 2 = Online, 3 = Holiday)
-         * @field array skipWeeks What week (in int) is a holiday for a particular class
+         * @property {string} name Name of the class
+         * @property {int} day Day of the class (1 = Monday, 2 = Tuesday, so on)
+         * @property {string} time Hour and minute when the class starts
+         * @property {int} timeTolerance Time Tolerance (in seconds) after class starts
+         * @property {array} location Where the class is being held (0 = Unknown, 1 = Onsite, 2 = Online, 3 = Holiday)
+         * @property {array} skipWeeks What week (in int) is a holiday for a particular class
          */
         SistemOtomasiPerkantoran: {
             name: "Sistem Otomasi Perkantoran",
