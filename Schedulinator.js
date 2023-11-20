@@ -277,6 +277,21 @@ var Schedulinator = {
             formattedMonth = month < 10 ? '0' + month : month;
         return `${formattedDay}-${formattedMonth}-${year}`;
     },
+    translateLocationId(location) {
+        return {
+            1: {
+                text: "LANGSUNG",
+                color: "success"
+            },
+            2: {
+                text: "MAYA",
+                color: "primary"
+            }
+        }[location] ?? {
+            text: "TIDAK ADA DATA",
+            color: "danger"
+        };
+    },
     build(schedule) {
         if (Object.keys(this.data.raw).length < 1) {
             alert("Build failure: No raw data loaded.");
@@ -296,7 +311,7 @@ var Schedulinator = {
                 return !isNaN(new Date(dateStr));
             };
 
-        /** Ensure the starting and ending dates are valid */
+        // Ensure the starting and ending dates are valid
         if (!isValidDate(startingDate) || !isValidDate(endingDate)) {
             alert("Build failure: Metadata error. Start or end date is invalid.");
             console.log("Build failure: Metadata error. Start or end date is invalid.");
@@ -308,9 +323,10 @@ var Schedulinator = {
             return false;
         }
 
-        /** Building override index */
+        // Build override index
         raw.schedule.overrides.forEach(o => {
             if (typeof o.date === 'object' && o.date !== null) {
+                // Ranged overrides has start and end time in millis
                 if (typeof overrideIndex["ranged"] == "undefined") {
                     overrideIndex["ranged"] = [];
                 }
@@ -327,11 +343,12 @@ var Schedulinator = {
             }
         });
 
-        /** Building events index */
+        // Build events index
         raw.schedule.events.forEach(e => {
             /**
              * Events are type that is INJECTED INTO the REGULAR schedule.
              * They can be flexible, it could be for breaks, upacara, prayers, etc.
+             * Currently available types: BREAK
              */
             if (typeof eventsIndex[e.type] == "undefined") {
                 eventsIndex[e.type] = [];
@@ -339,28 +356,37 @@ var Schedulinator = {
             eventsIndex[e.type].push(e);
         });
 
+        // Create class meeting count index
+        var meetingIndex = {};
+        raw.schedule.regularClasses.forEach(c => {
+            meetingIndex[c.subject] = 0;
+        });
+
+        // Build the final schedule
+        // This loop represnts each day
         while (true) {
             let stringDate = this.dateToString(startingDate);
 
             var toPush = (function(){
-                /** Check for overrides */
+                // Check for overrides
                 if (typeof overrideIndex[stringDate] !== "undefined") {
                     // Overrides by string index, value is already an array
                     return overrideIndex[stringDate];
                 }
+                // Check for ranged overrides
                 var overrides = [];
                 overrideIndex.ranged.forEach(o => {
-                    // Value is individual object
                     let millis = startingDate.getTime();
                     if (millis < o.end && millis >= o.start) {
                         overrides.push(o.details);
                     }
                 });
                 if (overrides.length > 0) {
+                    // TODO: Handle the increment for index
                     return overrides;
                 }
 
-                /** No overrides */
+                // No overrides
                 thisWeek = startingDate.getWeek();
                 if (thisWeek >= startingWeek) {
                     thisWeek -= startingWeek; // Week starts from 0
@@ -370,8 +396,29 @@ var Schedulinator = {
                 thisDay = startingDate.getDay();
 
                 // Retrieve classes
+                var today = [];
+                raw.schedule.regularClasses.forEach(c => {
+                    if (c.day.includes(thisDay)) {
+                        today.push(c);
+                    }
+                })
+                
                 // Check should inject breaks
-                // Check if in ranged overrides
+                var showBreaks = false;
+                today.forEach(c => {
+                    if (["REGULAR", "REPLACEMENT"].includes(c.type)) {
+                        // We override the location, but only for the element in today, not in master. 
+                        let location = c.location[meetingIndex[c.subject]];
+                        c.location = this.translateLocationId(location);
+                        meetingIndex[c.subject]++;
+
+                        if (location == 1) {
+                            // Because there's a possibility for online and offline class in the same day.
+                            showBreaks = true;
+                        }
+                    }
+                })
+
                 // Sort by time
                 // Add to array
 
