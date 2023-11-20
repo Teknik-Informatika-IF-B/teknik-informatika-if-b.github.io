@@ -56,14 +56,15 @@ const DEFAULT_SCHEDULE = {
                 time: [
                     {
                         start: "17:00",
-                        end: "19:10"
+                        end: "19:10",
+                        tolerance: 15 * 60,
                     },
                     {
                         start: "19:30",
-                        end: "21:00"
+                        end: "21:00",
+                        tolerance: 10 * 60,
                     }
                 ],
-                timeTolerance: 15 * 60,
                 location: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             },
             {
@@ -74,14 +75,15 @@ const DEFAULT_SCHEDULE = {
                 time: [
                     {
                         start: "17:45",
-                        end: "19:10"
+                        end: "19:10",
+                        tolerance: 15 * 60,
                     },
                     {
                         start: "19:30",
-                        end: "20:50"
+                        end: "20:50",
+                        tolerance: 10 * 60,
                     }
                 ],
-                timeTolerance: 15 * 60,
                 location: [1, 2, 2, 2, 1, 1, 1, 2, 1, 1, 2, 2, 2, 1, 1, 2],
             },
             {
@@ -92,7 +94,8 @@ const DEFAULT_SCHEDULE = {
                 time: [
                     {
                         start: "17:30",
-                        end: "19:10"
+                        end: "19:10",
+                        tolerance: 15 * 60,
                     }
                 ],
                 timeTolerance: 15 * 60,
@@ -106,10 +109,10 @@ const DEFAULT_SCHEDULE = {
                 time: [
                     {
                         start: "19:30",
-                        end: "20:50"
+                        end: "20:50",
+                        tolerance: 10 * 60,
                     }
                 ],
-                timeTolerance: 10 * 60,
                 location: [1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2],
             },
             {
@@ -120,14 +123,15 @@ const DEFAULT_SCHEDULE = {
                 time: [
                     {
                         start: "17:45",
-                        end: "19:10"
+                        end: "19:10",
+                        tolerance: 15 * 60,
                     },
                     {
                         start: "19:30",
-                        end: "20:50"
+                        end: "20:50",
+                        tolerance: 10 * 60,
                     }
                 ],
-                timeTolerance: 15 * 60,
                 location: [1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 1, 2, 0],
             },
             {
@@ -138,20 +142,21 @@ const DEFAULT_SCHEDULE = {
                 time: [
                     {
                         start: "17:45",
-                        end: "19:10"
+                        end: "19:10",
+                        tolerance: 15 * 60,
                     },
                     {
                         start: "19:30",
-                        end: "20:50"
+                        end: "20:50",
+                        tolerance: 10 * 60,
                     }
                 ],
-                timeTolerance: 15 * 60,
                 location: [1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 2, 2],
             }
         ],
         events: [
             {
-                name: "Istirahat",
+                subject: "Istirahat",
                 day: [1, 2, 3, 4, 5],
                 type: "BREAK",
                 classroom: null,
@@ -168,7 +173,7 @@ const DEFAULT_SCHEDULE = {
              * Types: HOLIDAY, EXAM, REPLACEMENT (Kelas Pengganti)
              */
             {
-                name: "Minggu Tenang",
+                subject: "Minggu Tenang",
                 date: {
                     start: "06-11-2023",
                     end: "10-11-2023"
@@ -176,20 +181,12 @@ const DEFAULT_SCHEDULE = {
                 type: "HOLIDAY"
             },
             {
-                name: "Wawasan Informatika",
+                subject: "Wawasan Informatika",
                 date: "06-11-2023",
                 type: "REPLACEMENT",
-                classroom: null,
-                time: [
-                    {
-                        start: "17:45",
-                        end: "20:50"
-                    }
-                ],
-                location: 2,
             },
             {
-                name: "Pemrograman Komputer",
+                subject: "Pemrograman Komputer",
                 date: "13-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -202,7 +199,7 @@ const DEFAULT_SCHEDULE = {
                 location: 2,
             },
             {
-                name: "Pemikiran Desain",
+                subject: "Pemikiran Desain",
                 date: "14-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -215,7 +212,7 @@ const DEFAULT_SCHEDULE = {
                 location: 2,
             },
             {
-                name: "Pengembangan Karakter: Kepemimpinan",
+                subject: "Pengembangan Karakter: Kepemimpinan",
                 date: "15-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -228,7 +225,7 @@ const DEFAULT_SCHEDULE = {
                 location: 2,
             },
             {
-                name: "	Wawasan Informatika",
+                subject: "Wawasan Informatika",
                 date: "16-11-2023",
                 type: "EXAM",
                 classroom: "B.T3/L2,B.T5/L2",
@@ -241,10 +238,10 @@ const DEFAULT_SCHEDULE = {
                 location: 1,
             },
             {
-                name: "	Sistem Otomasi Perkantoran",
+                subject: "Sistem Otomasi Perkantoran",
                 date: "17-11-2023",
                 type: "EXAM",
-                classroom: "A.P3/L2 - Lab 1	",
+                classroom: "A.P3/L2 - Lab 1",
                 time: [
                     {
                         start: "17:30",
@@ -252,6 +249,16 @@ const DEFAULT_SCHEDULE = {
                     }
                 ],
                 location: 1,
+            },
+            {
+                subject: "Libur Tahun Baru",
+                date: "01-01-2024",
+                type: "HOLIDAY"
+            },
+            {
+                subject: "Sistem Otomasi Perkantoran",
+                date: "15-01-2024",
+                type: "REPLACEMENT",
             },
         ]
     }
@@ -299,169 +306,136 @@ var Schedulinator = {
             return false;
         }
 
-        var builtSchedule = {},
-            overrideIndex = {},
-            eventsIndex = {},
-            raw = this.data.raw,
-            startingDate = this.stringToDate(raw.metadata.start),
-            endingDate = this.stringToDate(raw.metadata.end),
-            startingWeek = startingDate.getWeek(),
-            countDays = 0,
-            isValidDate = function (dateStr) {
-                return !isNaN(new Date(dateStr));
-            };
+        const builtSchedule = {};
+        const overrideIndex = {};
+        const eventsIndex = {};
+        const meetingIndex = {};
+        const subjectIndex = {};
+        const raw = this.data.raw;
+        const startingDate = this.stringToDate(raw.metadata.start);
+        const endingDate = this.stringToDate(raw.metadata.end);
+        const startingWeek = startingDate.getWeek();
+        let countDays = 0;
 
-        // Ensure the starting and ending dates are valid
-        if (!isValidDate(startingDate) || !isValidDate(endingDate)) {
+        const isValidDate = (dateStr) => !isNaN(new Date(dateStr));
+
+        if (!isValidDate(startingDate) || !isValidDate(endingDate) || startingDate.getTime() >= endingDate.getTime()) {
             alert("Build failure: Metadata error. Start or end date is invalid.");
             console.log("Build failure: Metadata error. Start or end date is invalid.");
-            return false;
-        }
-        if (startingDate.getTime() >= endingDate.getTime()) {
-            alert("Build failure: Metadata error. Start date cannot be past or the same as end date.");
-            console.log("Build failure: Metadata error. Start date cannot be past or the same as end date.");
             return false;
         }
 
         // Build override index
         raw.schedule.overrides.forEach(o => {
-            if (typeof o.date === 'object' && o.date !== null) {
-                // Ranged overrides has start and end time in millis
-                if (typeof overrideIndex["ranged"] == "undefined") {
-                    overrideIndex["ranged"] = [];
-                }
-                overrideIndex["ranged"].push({
-                    start: this.stringToDate(o.date.start).getTime(),
-                    end: this.stringToDate(o.date.end).getTime(),
-                    details: o
-                });
-            } else {
-                if (typeof overrideIndex[o.date] == "undefined") {
-                    overrideIndex[o.date] = [];
-                }
-                overrideIndex[o.date].push(o);
-            }
+            const dateIsObject = typeof o.date === 'object' && o.date !== null;
+            const overrideKey = dateIsObject ? "ranged" : o.date;
+        
+            overrideIndex[overrideKey] = overrideIndex[overrideKey] || [];
+            overrideIndex[overrideKey].push({
+                start: dateIsObject ? this.stringToDate(o.date.start).getTime() : null,
+                end: dateIsObject ? this.stringToDate(o.date.end).getTime() : null,
+                details: o
+            });
         });
 
         // Build events index
         raw.schedule.events.forEach(e => {
-            /**
-             * Events are type that is INJECTED INTO the REGULAR schedule.
-             * They can be flexible, it could be for breaks, upacara, prayers, etc.
-             * Currently available types: BREAK
-             */
-            if (typeof eventsIndex[e.type] == "undefined") {
-                eventsIndex[e.type] = [];
-            }
+            eventsIndex[e.type] = eventsIndex[e.type] || [];
             eventsIndex[e.type].push(e);
         });
 
-        // Create class meeting count index
-        var meetingIndex = {};
+        // Create class meeting count and subject index
         raw.schedule.regularClasses.forEach(c => {
             meetingIndex[c.subject] = 0;
+            subjectIndex[c.subject] = { ...c };
         });
 
-        // Build the final schedule
-        // This loop represnts each day
+        // Build the final schedule with each loop representing a day
         while (true) {
-            let stringDate = this.dateToString(startingDate);
+            const stringDate = this.dateToString(startingDate);
+            const toPush = (function () {
+                let classesInDay = [];
+                const classesToday = [];
+                let flag_hasOverrides = false;
 
-            var toPush = (function(){
-                var classesInDay = [],
-                    today = [],
-                    flag_hasOverrides = false;
-
-                // Check for overrides
-                if (typeof overrideIndex[stringDate] !== "undefined") {
-                    // Overrides by string index, value is already an array
+                if (overrideIndex[stringDate]) {
                     classesInDay = overrideIndex[stringDate];
                     flag_hasOverrides = true;
-                }
-                // Check for ranged overrides
-                var overrides = [];
-                overrideIndex.ranged.forEach(o => {
-                    let millis = startingDate.getTime();
-                    if (millis < o.end && millis >= o.start) {
-                        overrides.push(o.details);
-                    }
-                });
-                if (overrides.length > 0) {
-                    classesInDay = overrides;
-                    flag_hasOverrides = true;
+                } else {
+                    overrideIndex.ranged.forEach(o => {
+                        const millis = startingDate.getTime();
+                        if (millis < o.end && millis >= o.start) {
+                            classesInDay.push({...o.details});
+                            flag_hasOverrides = true;
+                        }
+                    });
                 }
 
-                // No overrides
                 if (!flag_hasOverrides) {
-                    thisWeek = startingDate.getWeek();
-                    if (thisWeek >= startingWeek) {
-                        thisWeek -= startingWeek; // Week starts from 0
-                    } else if (thisWeek < startingWeek) {
-                        thisWeek += 52 - startingWeek; // 52 weeks in a year
-                    }
-                    thisDay = startingDate.getDay();
+                    const thisWeek = (startingDate.getWeek() - startingWeek + 52) % 52;
+                    const thisDay = startingDate.getDay();
 
-                    // Retrieve classes
                     raw.schedule.regularClasses.forEach(c => {
-                        if (c.day.includes(thisDay)) {debugger;
+                        if (c.day.includes(thisDay)) {
                             classesInDay.push(c);
                         }
-                    })
+                    });
                 }
 
-                console.log("Checking:", stringDate, thisWeek, thisDay, meetingIndex);
-                
-                // Check should inject breaks and translate location
-                // TODO: For replacement class, we may need to index the locations array
-                var showBreaks = false;
+                let showBreaks = false;
                 classesInDay.forEach(c => {
-                    console.log(c.type);
-                    if (["REGULAR", "REPLACEMENT"].includes(c.type)) {
-                        // We override the location, but only for the element in today, not in master. 
-                        let location = c.location[meetingIndex[c.subject]];
-                        c.location = Schedulinator.translateLocationId(location);
-                        meetingIndex[c.subject]++;
-                        if (location == 1) {
-                            // Because there's a possibility for online and offline class in the same day.
+                    let details = { ...c };
+                    if (["REGULAR", "REPLACEMENT"].includes(details.type)) {
+                        if (details.type === "REPLACEMENT") {
+                            details = { ...subjectIndex[details.subject], ...details };
+                        }
+                        const thisLocationIndex = meetingIndex[details.subject];
+                        if (typeof details.location[thisLocationIndex] === "undefined") {
+                            // Location not specified for the meeting.
+                            // Assumming all meetings have been satisfied.
+                            return;
+                        }
+                        const location = details.location[thisLocationIndex];
+                        details.location = Schedulinator.translateLocationId(location);
+                        meetingIndex[details.subject]++;
+                        if (location === 1) {
                             showBreaks = true;
                         }
                     }
-
-                    today.push(c);
+                    classesToday.push(details);
                 });
-                console.log(today);
 
-                return today;
-
-                // Sort by time
-                // Add to array
+                return { classesToday, showBreaks };
             })();
 
-            if (toPush.length > 0) {
-                console.log(toPush);
-                builtSchedule[stringDate] = toPush;
-            }
+            // if (toPush.classesToday.length > 0) {
+            //     builtSchedule[stringDate] = toPush.classesToday;
+            // }
+            // Sort through the classesToday and separate out the times
 
-            /** Prepare for next iteration or exit */
-            if (stringDate == raw.metadata.end) {
-                console.log("Reached the end of semester. Exiting...", countDays);
+            if (stringDate === raw.metadata.end) {
+                console.log("Reached the end of the semester. Exiting...", countDays);
+                console.log(builtSchedule);
                 break;
             }
+
             if (countDays >= 365) {
                 console.log("Did not stop before the year limit is up. Possible infinite loop.");
                 break;
             }
+
             startingDate.setDate(startingDate.getDate() + 1);
             countDays++;
         }
-
-        console.log(builtSchedule, overrideIndex, eventsIndex);
     },
     setRawSchedule(schedule) {
         localStorage.setItem(`Schedulinator_raw`, JSON.stringify(schedule));
         return schedule;
     },
     loadSchedule() {
+        // TODO: REMOVE ME! ALWAYS RESET RAW SCHEDULE
+        Schedulinator.setRawSchedule(DEFAULT_SCHEDULE);
+
         raw = localStorage.getItem(`Schedulinator_raw`);
         if (null == raw) {
             alert("DEV ONLY: No schedule set. Loading default schedule.");
