@@ -292,7 +292,7 @@ var Schedulinator = {
             color: "danger"
         };
     },
-    build(schedule) {
+    build() {
         if (Object.keys(this.data.raw).length < 1) {
             alert("Build failure: No raw data loaded.");
             console.log("Build failure: No raw data loaded.");
@@ -368,13 +368,14 @@ var Schedulinator = {
             let stringDate = this.dateToString(startingDate);
 
             var toPush = (function(){
-                var today = [],
+                var classesInDay = [],
+                    today = [],
                     flag_hasOverrides = false;
 
                 // Check for overrides
                 if (typeof overrideIndex[stringDate] !== "undefined") {
                     // Overrides by string index, value is already an array
-                    today = overrideIndex[stringDate];
+                    classesInDay = overrideIndex[stringDate];
                     flag_hasOverrides = true;
                 }
                 // Check for ranged overrides
@@ -386,7 +387,7 @@ var Schedulinator = {
                     }
                 });
                 if (overrides.length > 0) {
-                    today = overrides;
+                    classesInDay = overrides;
                     flag_hasOverrides = true;
                 }
 
@@ -402,32 +403,33 @@ var Schedulinator = {
 
                     // Retrieve classes
                     raw.schedule.regularClasses.forEach(c => {
-                        if (c.day.includes(thisDay)) {
-                            today.push(c);
+                        if (c.day.includes(thisDay)) {debugger;
+                            classesInDay.push(c);
                         }
                     })
                 }
 
                 console.log("Checking:", stringDate, thisWeek, thisDay, meetingIndex);
                 
-                // Check should inject breaks
+                // Check should inject breaks and translate location
+                // TODO: For replacement class, we may need to index the locations array
                 var showBreaks = false;
-                console.log(today);
-                today.forEach(c => {
+                classesInDay.forEach(c => {
+                    console.log(c.type);
                     if (["REGULAR", "REPLACEMENT"].includes(c.type)) {
                         // We override the location, but only for the element in today, not in master. 
                         let location = c.location[meetingIndex[c.subject]];
                         c.location = Schedulinator.translateLocationId(location);
                         meetingIndex[c.subject]++;
-
                         if (location == 1) {
                             // Because there's a possibility for online and offline class in the same day.
                             showBreaks = true;
                         }
                     }
-                });
 
-                debugger;
+                    today.push(c);
+                });
+                console.log(today);
 
                 return today;
 
@@ -435,7 +437,8 @@ var Schedulinator = {
                 // Add to array
             })();
 
-            if (toPush) {
+            if (toPush.length > 0) {
+                console.log(toPush);
                 builtSchedule[stringDate] = toPush;
             }
 
