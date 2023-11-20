@@ -368,10 +368,14 @@ var Schedulinator = {
             let stringDate = this.dateToString(startingDate);
 
             var toPush = (function(){
+                var today = [],
+                    flag_hasOverrides = false;
+
                 // Check for overrides
                 if (typeof overrideIndex[stringDate] !== "undefined") {
                     // Overrides by string index, value is already an array
-                    return overrideIndex[stringDate];
+                    today = overrideIndex[stringDate];
+                    flag_hasOverrides = true;
                 }
                 // Check for ranged overrides
                 var overrides = [];
@@ -382,34 +386,38 @@ var Schedulinator = {
                     }
                 });
                 if (overrides.length > 0) {
-                    // TODO: Handle the increment for index
-                    return overrides;
+                    today = overrides;
+                    flag_hasOverrides = true;
                 }
 
                 // No overrides
-                thisWeek = startingDate.getWeek();
-                if (thisWeek >= startingWeek) {
-                    thisWeek -= startingWeek; // Week starts from 0
-                } else if (thisWeek < startingWeek) {
-                    thisWeek += 52 - startingWeek; // 52 weeks in a year
-                }
-                thisDay = startingDate.getDay();
-
-                // Retrieve classes
-                var today = [];
-                raw.schedule.regularClasses.forEach(c => {
-                    if (c.day.includes(thisDay)) {
-                        today.push(c);
+                if (!flag_hasOverrides) {
+                    thisWeek = startingDate.getWeek();
+                    if (thisWeek >= startingWeek) {
+                        thisWeek -= startingWeek; // Week starts from 0
+                    } else if (thisWeek < startingWeek) {
+                        thisWeek += 52 - startingWeek; // 52 weeks in a year
                     }
-                })
+                    thisDay = startingDate.getDay();
+
+                    // Retrieve classes
+                    raw.schedule.regularClasses.forEach(c => {
+                        if (c.day.includes(thisDay)) {
+                            today.push(c);
+                        }
+                    })
+                }
+
+                console.log("Checking:", stringDate, thisWeek, thisDay, meetingIndex);
                 
                 // Check should inject breaks
                 var showBreaks = false;
+                console.log(today);
                 today.forEach(c => {
                     if (["REGULAR", "REPLACEMENT"].includes(c.type)) {
                         // We override the location, but only for the element in today, not in master. 
                         let location = c.location[meetingIndex[c.subject]];
-                        c.location = this.translateLocationId(location);
+                        c.location = Schedulinator.translateLocationId(location);
                         meetingIndex[c.subject]++;
 
                         if (location == 1) {
@@ -417,12 +425,14 @@ var Schedulinator = {
                             showBreaks = true;
                         }
                     }
-                })
+                });
+
+                debugger;
+
+                return today;
 
                 // Sort by time
                 // Add to array
-
-                console.log("Checking:", stringDate, thisWeek, thisDay);
             })();
 
             if (toPush) {
