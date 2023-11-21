@@ -44,8 +44,8 @@ const DEFAULT_SCHEDULE = {
             /**
              * @property {string} subject Subject name
              * @property {int[]} day Day of the class (1 = Monday, 2 = Tuesday, so on)
-             * @property {string} time Hour and minute when the class starts
-             * @property {int} timeTolerance Time Tolerance (in seconds) after class starts
+             * @property {string} type Class type (REGULAR, REPLACEMENT, EXAM, HOLIDAY)
+             * @property {object[]} time Hour and minute when the class starts
              * @property {int[]} location Where the class is being held (0 = Unknown, 1 = Onsite, 2 = Online)
              */
             {
@@ -264,24 +264,24 @@ const DEFAULT_SCHEDULE = {
     }
 }
 
-var Schedulinator = {
+const Schedulinator = {
     data: {
         raw: {},
         cached: {}
     },
     stringToDate(date) {
-        let dateParts = date.split('-'),
-            day = parseInt(dateParts[0], 10),
-            month = parseInt(dateParts[1], 10) - 1, // Month start from 0
-            year = parseInt(dateParts[2], 10);
+        const dateParts = date.split('-');
+        const day = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10) - 1; // Month start from 0
+        const year = parseInt(dateParts[2], 10);
         return new Date(year, month, day);
     },
     dateToString(date) {
-        let day = date.getDate(),
-            month = date.getMonth() + 1, // Month start from 0
-            year = date.getFullYear(),
-            formattedDay = day < 10 ? '0' + day : day,
-            formattedMonth = month < 10 ? '0' + month : month;
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Month start from 0
+        const year = date.getFullYear();
+        const formattedDay = day < 10 ? '0' + day : day;
+        const formattedMonth = month < 10 ? '0' + month : month;
         return `${formattedDay}-${formattedMonth}-${year}`;
     },
     translateLocationId(location) {
@@ -329,7 +329,7 @@ var Schedulinator = {
         raw.schedule.overrides.forEach(o => {
             const dateIsObject = typeof o.date === 'object' && o.date !== null;
             const overrideKey = dateIsObject ? "ranged" : o.date;
-        
+
             overrideIndex[overrideKey] = overrideIndex[overrideKey] || [];
             overrideIndex[overrideKey].push({
                 start: dateIsObject ? this.stringToDate(o.date.start).getTime() : null,
@@ -359,13 +359,16 @@ var Schedulinator = {
                 let flag_hasOverrides = false;
 
                 if (overrideIndex[stringDate]) {
-                    classesInDay = overrideIndex[stringDate];
+                    overrideIndex[stringDate].forEach(o => {
+                        classesInDay.push({ ...o.details });
+                    })
                     flag_hasOverrides = true;
                 } else {
+                    // Specific overrides overrides ranged overrides
                     overrideIndex.ranged.forEach(o => {
                         const millis = startingDate.getTime();
-                        if (millis < o.end && millis >= o.start) {
-                            classesInDay.push({...o.details});
+                        if (millis <= o.end && millis >= o.start) {
+                            classesInDay.push({ ...o.details });
                             flag_hasOverrides = true;
                         }
                     });
@@ -408,10 +411,48 @@ var Schedulinator = {
                 return { classesToday, showBreaks };
             })();
 
-            // if (toPush.classesToday.length > 0) {
-            //     builtSchedule[stringDate] = toPush.classesToday;
-            // }
+            if (toPush.showBreaks) {
+                eventsIndex["BREAK"].forEach(e => {
+                    // Possible edge case: When there's only class slot in a day
+                    // Then the break time would be redundant.
+                    // Probably not going to happen anytime soon...
+                    toPush.classesToday.push(e);
+                });
+            }
+
             // Sort through the classesToday and separate out the times
+            const expanded = [];
+            toPush.classesToday.forEach(c => {
+                if (c.time) {
+                    c.time.forEach(t => {
+                        expanded.push({ ...c, time: t });
+                    });
+                } else {
+                    expanded.push({ ...c });
+                }
+            });
+
+            const sortedClasses = expanded
+                .sort((a, b) => {
+                    const timeA = a.time ? Number(a.time.start.replace(":", "")) : null;
+                    const timeB = b.time ? Number(b.time.start.replace(":", "")) : null;
+
+                    if (timeA && timeB) {
+                        return timeA - timeB;
+                    } else if (timeA) {
+                        return -1; // a comes before b
+                    } else if (timeB) {
+                        return 1; // b comes before a
+                    } else {
+                        return 0; // no time for both, maintain order
+                    }
+                });
+
+            if (toPush.classesToday.length > 0) {
+                // TEMPORARY
+                console.log(stringDate, expanded, sortedClasses);
+                builtSchedule[stringDate] = toPush.classesToday;
+            }
 
             if (stringDate === raw.metadata.end) {
                 console.log("Reached the end of the semester. Exiting...", countDays);
