@@ -173,6 +173,11 @@ const DEFAULT_SCHEDULE = {
              * Types: HOLIDAY, EXAM, REPLACEMENT (Kelas Pengganti)
              */
             {
+                subject: "Libur Wawasan Informatika",
+                date: "19-10-2023",
+                type: "HOLIDAY"
+            },
+            {
                 subject: "Minggu Tenang",
                 date: {
                     start: "06-11-2023",
@@ -400,6 +405,7 @@ const Schedulinator = {
                         }
                         const location = details.location[thisLocationIndex];
                         details.location = Schedulinator.translateLocationId(location);
+                        details.meetingCount = thisLocationIndex + 1;
                         meetingIndex[details.subject]++;
                         if (location === 1) {
                             showBreaks = true;
@@ -420,37 +426,35 @@ const Schedulinator = {
                 });
             }
 
-            // Sort through the classesToday and separate out the times
-            const expanded = [];
+            const sortedClasses = [];
             toPush.classesToday.forEach(c => {
+                // Sort through the classesToday and separate out the times
                 if (c.time) {
                     c.time.forEach(t => {
-                        expanded.push({ ...c, time: t });
+                        sortedClasses.push({ ...c, time: t });
                     });
                 } else {
-                    expanded.push({ ...c });
+                    sortedClasses.push({ ...c });
+                }
+            });
+            sortedClasses.sort((a, b) => {
+                const timeA = a.time ? Number(a.time.start.replace(":", "")) : null;
+                const timeB = b.time ? Number(b.time.start.replace(":", "")) : null;
+
+                if (timeA && timeB) {
+                    return timeA - timeB;
+                } else if (timeA) {
+                    return -1; // a comes before b
+                } else if (timeB) {
+                    return 1; // b comes before a
+                } else {
+                    return 0; // no time for both, maintain order
                 }
             });
 
-            const sortedClasses = expanded
-                .sort((a, b) => {
-                    const timeA = a.time ? Number(a.time.start.replace(":", "")) : null;
-                    const timeB = b.time ? Number(b.time.start.replace(":", "")) : null;
-
-                    if (timeA && timeB) {
-                        return timeA - timeB;
-                    } else if (timeA) {
-                        return -1; // a comes before b
-                    } else if (timeB) {
-                        return 1; // b comes before a
-                    } else {
-                        return 0; // no time for both, maintain order
-                    }
-                });
-
             if (toPush.classesToday.length > 0) {
                 // TEMPORARY
-                console.log(stringDate, expanded, sortedClasses);
+                console.log(stringDate, sortedClasses);
                 builtSchedule[stringDate] = toPush.classesToday;
             }
 
