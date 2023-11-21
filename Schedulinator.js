@@ -393,8 +393,8 @@ const Schedulinator = {
                 let showBreaks = false;
                 classesInDay.forEach(c => {
                     let details = { ...c };
-                    if (["REGULAR", "REPLACEMENT"].includes(details.type)) {
-                        if (details.type === "REPLACEMENT") {
+                    if (["REGULAR", "REPLACEMENT", "EXAM"].includes(details.type)) {
+                        if (["REPLACEMENT", "EXAM"].includes(details.type)) {
                             details = { ...subjectIndex[details.subject], ...details };
                         }
                         const thisLocationIndex = meetingIndex[details.subject];
@@ -404,6 +404,7 @@ const Schedulinator = {
                             return;
                         }
                         const location = details.location[thisLocationIndex];
+                        // Need to have special case where location is hard-coded.
                         details.location = Schedulinator.translateLocationId(location);
                         details.meetingCount = thisLocationIndex + 1;
                         meetingIndex[details.subject]++;
