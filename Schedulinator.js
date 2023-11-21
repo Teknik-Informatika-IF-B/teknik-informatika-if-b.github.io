@@ -173,8 +173,8 @@ const DEFAULT_SCHEDULE = {
              * Types: HOLIDAY, EXAM, REPLACEMENT (Kelas Pengganti)
              */
             {
-                subject: "Libur Wawasan Informatika",
-                date: "19-10-2023",
+                subject: "Libur (Maulid Nabi Muhammad SAW)",
+                date: "28-09-2023",
                 type: "HOLIDAY"
             },
             {
@@ -191,7 +191,20 @@ const DEFAULT_SCHEDULE = {
                 type: "REPLACEMENT",
             },
             {
-                subject: "Pemrograman Komputer",
+                subject: "Pemrograman Komputer TEORI",
+                date: "13-11-2023",
+                type: "EXAM",
+                classroom: null,
+                time: [
+                    {
+                        start: "17:30",
+                        end: "19:10"
+                    }
+                ],
+                location: 2,
+            },
+            {
+                subject: "Pemrograman Komputer PRAKTEK",
                 date: "13-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -397,14 +410,21 @@ const Schedulinator = {
                         if (["REPLACEMENT", "EXAM"].includes(details.type)) {
                             details = { ...subjectIndex[details.subject], ...details };
                         }
+                        
                         const thisLocationIndex = meetingIndex[details.subject];
-                        if (typeof details.location[thisLocationIndex] === "undefined") {
-                            // Location not specified for the meeting.
-                            // Assumming all meetings have been satisfied.
-                            return;
+                        let location = null;
+
+                        if (typeof details.location === 'object' && details.location !== null) {
+                            if (typeof details.location[thisLocationIndex] === "undefined") {
+                                // Location not specified for the meeting.
+                                // Assumming all meetings have been satisfied.
+                                return;
+                            }
+                            location = details.location[thisLocationIndex];
+                        } else {
+                            location = details.location;
                         }
-                        const location = details.location[thisLocationIndex];
-                        // Need to have special case where location is hard-coded.
+
                         details.location = Schedulinator.translateLocationId(location);
                         details.meetingCount = thisLocationIndex + 1;
                         meetingIndex[details.subject]++;
@@ -454,14 +474,11 @@ const Schedulinator = {
             });
 
             if (toPush.classesToday.length > 0) {
-                // TEMPORARY
-                console.log(stringDate, sortedClasses);
-                builtSchedule[stringDate] = toPush.classesToday;
+                builtSchedule[stringDate] = sortedClasses;
             }
 
             if (stringDate === raw.metadata.end) {
                 console.log("Reached the end of the semester. Exiting...", countDays);
-                console.log(builtSchedule);
                 break;
             }
 
@@ -473,15 +490,18 @@ const Schedulinator = {
             startingDate.setDate(startingDate.getDate() + 1);
             countDays++;
         }
+
+        return builtSchedule;
     },
     setRawSchedule(schedule) {
         localStorage.setItem(`Schedulinator_raw`, JSON.stringify(schedule));
         return schedule;
     },
+    setCacheData(cached) {
+        ocalStorage.setItem(`Schedulinator_cached`, JSON.stringify(cached));
+        return cached;
+    },
     loadSchedule() {
-        // TODO: REMOVE ME! ALWAYS RESET RAW SCHEDULE
-        Schedulinator.setRawSchedule(DEFAULT_SCHEDULE);
-
         raw = localStorage.getItem(`Schedulinator_raw`);
         if (null == raw) {
             alert("DEV ONLY: No schedule set. Loading default schedule.");
@@ -490,10 +510,18 @@ const Schedulinator = {
         }
         cache = localStorage.getItem(`Schedulinator_cache`);
         if (null == cache) {
-            // Build new schedule
+            cache = this.build();
+            this.data.cached = cache;
+
         }
         this.data.raw = JSON.parse(raw);
         this.data.cached = JSON.parse(cache);
         console.log("Schedule data loaded");
     }
 };
+
+const SchedulinatorViewer = {
+    renderCard(details) {
+        
+    }
+}
