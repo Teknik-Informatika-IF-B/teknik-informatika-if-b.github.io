@@ -34,10 +34,13 @@ Date.prototype.getWeek = function (dowOffset) {
 
 const DEFAULT_SCHEDULE = {
     metadata: {
-        class: "S-1 / Teknik Informatika (IF-B)",
+        identifier: "S1/TI/IF-B-SORE/23-24/SEM1", // In case we want to make it server-based
+        major: "S-1 / Teknik Informatika",
+        class: "IF-B-SORE",
         start: "18-09-2023", // 18 Sept 2023
         end: "08-03-2024", // 8 Mar 2024
-        code: "IF-B-SORE"
+        semester: 1,
+        academicYear: "2023/2024",
     },
     schedule: {
         regularClasses: [
@@ -173,7 +176,7 @@ const DEFAULT_SCHEDULE = {
              * Types: HOLIDAY, EXAM, REPLACEMENT (Kelas Pengganti)
              */
             {
-                subject: "Libur (Maulid Nabi Muhammad SAW)",
+                subject: "Maulid Nabi Muhammad SAW",
                 date: "28-09-2023",
                 type: "HOLIDAY"
             },
@@ -508,13 +511,13 @@ const Schedulinator = {
             this.setRawSchedule(DEFAULT_SCHEDULE);
             raw = localStorage.getItem(`Schedulinator_raw`);
         }
+        this.data.raw = JSON.parse(raw);
+
         cache = localStorage.getItem(`Schedulinator_cache`);
         if (null == cache) {
             cache = this.build();
-            this.data.cached = cache;
-
+            cache = localStorage.getItem(`Schedulinator_cache`);
         }
-        this.data.raw = JSON.parse(raw);
         this.data.cached = JSON.parse(cache);
         console.log("Schedule data loaded");
     }
