@@ -507,6 +507,9 @@ const Schedulinator = {
     getAllSchedule() {
         return this.data.cached;
     },
+    getTodaysSchedule() {
+        return this.getScheduleByDate(this.dateToString(new Date));
+    },
     findScheduleAfter(date) {
         date = this.stringToDate(date);
         date.setDate(date.getDate() + 1);
@@ -618,8 +621,15 @@ const SchedulinatorViewer = {
             </div>`
         }
     },
-    render() {
-
+    render(where, what) {
+        where.innerHTML = '';
+        what.forEach(e => {
+            where.innerHTML += this.renderCard(e).html;
+        })
+    },
+    run() {
+        today = Schedulinator.getTodaysSchedule();
+        this.render(this.elements.today, today);
     }
 }
 

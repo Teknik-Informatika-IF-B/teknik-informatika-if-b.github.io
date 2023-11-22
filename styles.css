@@ -1,3 +1,5 @@
+/* see https://github.com/GoogleChromeLabs/dark-mode-toggle */
+
 body {
     background-color: #f8f9fa;
 }
@@ -5,7 +7,7 @@ body {
 .card {
     border: none;
     border-radius: 7px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
@@ -15,7 +17,7 @@ body {
 
 .header-row {
     background-color: #f8f9fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
 }
 
 .font-x-large {
