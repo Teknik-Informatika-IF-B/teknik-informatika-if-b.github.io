@@ -162,7 +162,6 @@ const DEFAULT_SCHEDULE = {
                 subject: "Istirahat",
                 day: [1, 2, 3, 4, 5],
                 type: "BREAK",
-                classroom: null,
                 time: [
                     {
                         start: "19:10",
@@ -195,6 +194,7 @@ const DEFAULT_SCHEDULE = {
             },
             {
                 subject: "Pemrograman Komputer TEORI",
+                examType: "UTS",
                 date: "13-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -208,6 +208,7 @@ const DEFAULT_SCHEDULE = {
             },
             {
                 subject: "Pemrograman Komputer PRAKTEK",
+                examType: "UTS",
                 date: "13-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -221,6 +222,7 @@ const DEFAULT_SCHEDULE = {
             },
             {
                 subject: "Pemikiran Desain",
+                examType: "UTS",
                 date: "14-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -234,6 +236,7 @@ const DEFAULT_SCHEDULE = {
             },
             {
                 subject: "Pengembangan Karakter: Kepemimpinan",
+                examType: "UTS",
                 date: "15-11-2023",
                 type: "EXAM",
                 classroom: null,
@@ -247,6 +250,7 @@ const DEFAULT_SCHEDULE = {
             },
             {
                 subject: "Wawasan Informatika",
+                examType: "UTS",
                 date: "16-11-2023",
                 type: "EXAM",
                 classroom: "B.T3/L2,B.T5/L2",
@@ -260,6 +264,7 @@ const DEFAULT_SCHEDULE = {
             },
             {
                 subject: "Sistem Otomasi Perkantoran",
+                examType: "UTS",
                 date: "17-11-2023",
                 type: "EXAM",
                 classroom: "A.P3/L2 - Lab 1",
@@ -496,27 +501,54 @@ const Schedulinator = {
 
         return builtSchedule;
     },
-    setRawSchedule(schedule) {
+    getScheduleByDate(date = null) {
+        return this.data.cached[date];
+    },
+    getAllSchedule() {
+        return this.data.cached;
+    },
+    findScheduleAfter(date) {
+        date = this.stringToDate(date);
+        date.setDate(date.getDate() + 1);
+        let tries = 0;
+
+        while (tries < 21) {
+            // Attempting to find classes in the next 3 weeks
+            let stringDate = this.dateToString(date);
+            let upcoming = this.getScheduleByDate(stringDate);
+            if (upcoming) {
+                return {
+                    date: stringDate,
+                    schedule: upcoming,
+                };
+            }
+            date.setDate(date.getDate() + 1);
+            tries++;
+        };
+        return null;
+    },
+    setRawData(schedule) {
         localStorage.setItem(`Schedulinator_raw`, JSON.stringify(schedule));
         return schedule;
     },
     setCacheData(cached) {
-        ocalStorage.setItem(`Schedulinator_cached`, JSON.stringify(cached));
+        localStorage.setItem(`Schedulinator_cached`, JSON.stringify(cached));
         return cached;
     },
-    loadSchedule() {
+    loadData(rebuild = false) {
         raw = localStorage.getItem(`Schedulinator_raw`);
         if (null == raw) {
             alert("DEV ONLY: No schedule set. Loading default schedule.");
-            this.setRawSchedule(DEFAULT_SCHEDULE);
+            this.setRawData(DEFAULT_SCHEDULE);
             raw = localStorage.getItem(`Schedulinator_raw`);
         }
         this.data.raw = JSON.parse(raw);
 
-        cache = localStorage.getItem(`Schedulinator_cache`);
-        if (null == cache) {
+        cache = localStorage.getItem(`Schedulinator_cached`);
+        if (null == cache || rebuild) {
             cache = this.build();
-            cache = localStorage.getItem(`Schedulinator_cache`);
+            this.setCacheData(cache);
+            cache = localStorage.getItem(`Schedulinator_cached`);
         }
         this.data.cached = JSON.parse(cache);
         console.log("Schedule data loaded");
@@ -524,7 +556,71 @@ const Schedulinator = {
 };
 
 const SchedulinatorViewer = {
+    elements: {
+        today: document.getElementById('todayClasses'),
+        upcoming: null
+    },
     renderCard(details) {
-        
+        let examIndicator = '';
+        if (details.type === "EXAM") {
+            examIndicator = `<li class="list-group-item bg-danger"><b class="text-white" style="letter-spacing: 2px;">UJIAN — ${details.examType}</b></li>`;
+        }
+
+        let meetingTypeIndicator = '';
+        let classroomAndTimeIndicator = '';
+        if (["REGULAR", "REPLACEMENT", "EXAM"].includes(details.type)) {
+            meetingTypeIndicator = `<li class="list-group-item bg-${details.location.color}"><b class="text-white">${details.location.text} (PERT. ${details.meetingCount})</b></li>`;
+            classroomAndTimeIndicator = `<li class="list-group-item">
+                <div class="row">
+                    <div class="col-6 border-end align-self-center">
+                        <b>${details.classroom ?? "Lihat Kartu Ujian"}</b>
+                    </div>
+                    <div class="col-6 border-start align-self-center">
+                        <b>${details.time.start} — ${details.time.end}</b>
+                    </div>
+                </div>
+            </li>`;
+        } else if (["BREAK"].includes(details.type)) {
+            meetingTypeIndicator = `<li class="list-group-item bg-black"><b class="text-white">ISTIRAHAT</b></li>`;
+            classroomAndTimeIndicator = `<li class="list-group-item"><b>${details.time.start} — ${details.time.end}</b></li>`;
+        } else if (["HOLIDAY"].includes(details.type)) {
+            meetingTypeIndicator = `<li class="list-group-item bg-black"><b class="text-white">LIBUR</b></li>`;
+        }
+
+        let timerIndicator = '';
+        if (["REGULAR", "REPLACEMENT", "EXAM"].includes(details.type)) {
+            timerIndicator = `<li class="list-group-item">
+                <div class="row">
+                    <div class="col-6 border-end align-self-center">
+                        Mulai: <b id="timer_">...</b>
+                    </div>
+                    <div class="col-6 border-start align-self-center">
+                        Toleransi: <b id="timer_">...</b>
+                    </div>
+                </div>
+            </li>`;
+        } else if (["BREAK"].includes(details.type)) {
+            timerIndicator = `<li class="list-group-item">Sisa waktu: <b>...</b></li>`;
+        }
+
+        return {
+            html: 
+            `<div class="col-md-12 col-lg-4">
+                <div class="card mb-3">
+                    <ul class="list-group list-group-flush text-center">
+                        ${examIndicator}
+                        ${meetingTypeIndicator}
+                        <li class="list-group-item"><b class="font-larger">${details.subject}</b></li>
+                        ${classroomAndTimeIndicator}
+                        ${timerIndicator}
+                    </ul>
+                </div>
+            </div>`
+        }
+    },
+    render() {
+
     }
 }
+
+Schedulinator.loadData();
