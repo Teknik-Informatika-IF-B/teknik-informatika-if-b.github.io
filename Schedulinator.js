@@ -501,6 +501,9 @@ const Schedulinator = {
 
         return builtSchedule;
     },
+    getMetadata() {
+        return this.data.raw.metadata;
+    },
     getScheduleByDate(date = null) {
         return this.data.cached[date];
     },

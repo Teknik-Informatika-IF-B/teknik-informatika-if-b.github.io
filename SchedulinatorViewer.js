@@ -1,7 +1,8 @@
 const SchedulinatorViewer = {
     elements: {
         today: document.getElementById('todayClasses'),
-        upcoming: null
+        upcoming: null,
+        metadata: document.getElementById('classMetadata')
     },
     parseToReadableDate(date) {
         let months = ["Januari", "Febuari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
@@ -14,13 +15,15 @@ const SchedulinatorViewer = {
         let colClass = (details.classes.length < 3) ? "col-md-12 col-lg-6" : "col-md-12 col-lg-4";
         let classesHtml = '';
         details.classes.forEach(e => {
-            classesHtml += this.renderClassCard(e);
+            classesHtml += this.renderClassCard(e).html;
         });
+
+        // TODO: Handle timers and countdowns
 
         return `<div class="${colClass}">
             <div class="card">
                 <div class="card-header text-center bg-warning">
-                    <p class="mb-0">Tanggal:<br><b>${this.parseToReadableDate(details.date)}</b></p>
+                    <p class="mb-0"><b>${this.parseToReadableDate(details.date)}</b></p>
                 </div>
                 <div class="card-body" style="padding: 10px;">
                     ${classesHtml}
@@ -86,14 +89,31 @@ const SchedulinatorViewer = {
             </div>`
         }
     },
+    renderMetadata(data) {
+        return `<h1 class="mb-0 font-x-large">${data.major}</h1>
+        <small>Semester ${data.semester}, ${data.class}, ${data.academicYear}</small>`;
+    },
     render(where, what) {
         where.innerHTML = '';
-        what.forEach(e => {
-            where.innerHTML += this.renderClassCard(e).html;
-        })
+        where.innerHTML = this.renderDayCard(what);
     },
     run() {
-        today = Schedulinator.getTodaysSchedule();
-        this.render(this.elements.today, today);
+        // Handle metadata
+        let meta = Schedulinator.getMetadata();
+        if (!meta) {
+            // Not ready
+            // Ask user to enter class code or something
+            return;
+        }
+        this.elements.metadata.innerHTML = this.renderMetadata(meta);
+
+        // Handle today's classes
+        this.render(this.elements.today, {
+            date: new Date,
+            classes: Schedulinator.getTodaysSchedule()
+        });
+
+        // Handle upcoming classes
+
     }
 }

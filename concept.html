@@ -43,20 +43,19 @@
                 </div>
             </nav>
 
-            <!-- <div class="row sticky-top text-center mb-3 header-row">
-                <div class="col-12">
-                    <hr style="margin-bottom: 0.5rem;margin-top: 0;">
-                    <h1 class="mb-0 font-x-large">Informasi Jadwal Perkuliahan</h1>
-                    <small>Silahkan masukkan kode jadwal</small>
-                    <hr style="margin-bottom: 0;margin-top: 0.5rem;">
-                </div>
-            </div> -->
-
             <div class="row sticky-top text-center mb-3 header-row">
                 <div class="col-12">
                     <hr style="margin-bottom: 0.5rem;margin-top: 0;">
-                    <h1 class="mb-0 font-x-large">S-1 / Teknik Informatika</h1>
-                    <small>Semester 1, IF-B-SORE, 2023/2024</small>
+                    <div id="classMetadata">
+                        <div class="container">
+                            <p><b>Sistem Informasi Jadwal Perkuliahan</b></p>
+                            <p>Untuk memulai melihat jadwal perkuliahan Anda, silahkan masukkan kode jadwal, lalu tekan Terapkan.</p>
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="text" placeholder="Masukkan kode jadwal">
+                                <button class="btn btn-outline-success" type="button">Terapkan</button>
+                            </form>
+                        </div>
+                    </div>
                     <hr style="margin-bottom: 0;margin-top: 0.5rem;">
                 </div>
             </div>
@@ -69,18 +68,8 @@
                 &nbsp;Under development
             </div>
 
-            <div class="row justify-content-center">
-                <div class="col-md-12 col-lg-6">
-                    <div class="card">
-                        <div class="card-header text-center bg-warning">
-                            <p class="mb-0">Tanggal:<br><b>33 November 2023</b></p>
-                        </div>
-                        <div class="card-body" style="padding: 10px;">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Today's Classes -->
+            <div id="todayClasses" class="row justify-content-center"></div>
             <hr>
             <div class="row justify-content-center">
                 <div class="col-md-12 col-lg-6">
