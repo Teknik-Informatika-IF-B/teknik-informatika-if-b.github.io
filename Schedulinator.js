@@ -319,11 +319,10 @@ const Schedulinator = {
 
         while (tries < 21) {
             // Attempting to find classes in the next 3 weeks
-            let stringDate = this.dateToString(date);
-            let upcoming = this.getScheduleByDate(stringDate);
+            let upcoming = this.getScheduleByDate(this.dateToString(date));
             if (upcoming) {
                 return {
-                    date: stringDate,
+                    date: date,
                     schedule: upcoming,
                 };
             }
