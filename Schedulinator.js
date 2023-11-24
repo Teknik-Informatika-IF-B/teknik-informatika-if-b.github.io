@@ -312,13 +312,12 @@ const Schedulinator = {
     getTodaysSchedule() {
         return this.getScheduleByDate(this.dateToString(new Date));
     },
-    findScheduleAfter(date) {
+    findScheduleAfter(date, maxDays = 21) {
         date = this.stringToDate(date);
         date.setDate(date.getDate() + 1);
         let tries = 0;
 
-        while (tries < 21) {
-            // Attempting to find classes in the next 3 weeks
+        while (tries < maxDays) {
             let upcoming = this.getScheduleByDate(this.dateToString(date));
             if (upcoming) {
                 return {
@@ -332,28 +331,28 @@ const Schedulinator = {
         return null;
     },
     setRawData(schedule) {
-        localStorage.setItem(`Schedulinator_raw`, JSON.stringify(schedule));
-        return schedule;
+        return localStorage.setItem(`Schedulinator_raw`, JSON.stringify(schedule));
     },
     setCacheData(cached) {
-        localStorage.setItem(`Schedulinator_cached`, JSON.stringify(cached));
-        return cached;
+        return localStorage.setItem(`Schedulinator_cached`, JSON.stringify(cached));
     },
     loadData(rebuild = false) {
         raw = localStorage.getItem(`Schedulinator_raw`);
         if (null == raw) {
-            // Default schedule code
-            this.setRawData(DEFAULT_SCHEDULE['S11-IFBSORE-2324']);
-            raw = localStorage.getItem(`Schedulinator_raw`);
+            console.log('Schedulinator: Nothing to load.');
+            return false;
         }
         this.data.raw = JSON.parse(raw);
+        console.log('Schedulinator: Raw data loaded.');
 
         cache = localStorage.getItem(`Schedulinator_cached`);
         if (null == cache || rebuild) {
+            console.log('Schedulinator: Building cache...');
             cache = this.build();
             this.setCacheData(cache);
             cache = localStorage.getItem(`Schedulinator_cached`);
         }
         this.data.cached = JSON.parse(cache);
+        console.log('Schedulinator: Cache loaded. System ready.');
     }
 };

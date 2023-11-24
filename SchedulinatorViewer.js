@@ -1,8 +1,13 @@
 const SchedulinatorViewer = {
     elements: {
+        scheduleToday: document.getElementById('scheduleToday'),
+        scheduleAll: document.getElementById('scheduleAll'),
         today: document.getElementById('todayClasses'),
         upcoming: document.getElementById('upcomingClasses'),
         metadata: document.getElementById('classMetadata')
+    },
+    navigation: {
+
     },
     timer: {
         format(display) {
@@ -44,32 +49,33 @@ const SchedulinatorViewer = {
     renderDayCard(where, details) {
         let classesHtml = '';
         let classesTimers = [];
-        let colClass = "col-lg-6";
-        if (details.schedule) {
-            if (details.schedule.length >= 3) {
-                colClass = "col-lg-4";
-            }          
-            details.schedule.forEach(e => {
-                classes = this.renderClassCard({ ...e, ...{ date: details.date } });
-                classesHtml += classes.html;
-                classesTimers.push(classes.timer);
-            });
-        }
+        let colClass = "col-lg-4";
 
-        if (!details.schedule) {
-            classesHtml = `<div class="alert alert-danger d-flex align-items-center mb-0" role="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-square" viewBox="0 0 16 16">
-                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
-                </svg>
-                &nbsp;<b>Tidak ada kelas</b>
+        if (details === null) {
+            classesHtml = `<div class="alert alert-info mb-0 text-center" role="alert">
+                <b>Tidak ada kelas dalam waktu 3 minggu kedepan.</b>
             </div>`;
+        } else {
+            if (details.schedule) {
+                details.schedule.forEach(e => {
+                    classes = this.renderClassCard({ ...e, ...{ date: details.date } });
+                    classesHtml += classes.html;
+                    classesTimers.push(classes.timer);
+                });
+            }
+    
+            if (!details.schedule) {
+                classesHtml = `<div class="alert alert-info mb-0 text-center" role="alert">
+                    <p class="mb-0"><b>Tidak ada kelas</b><br>Curiga data tidak akurat?</p>
+                </div>`;
+            }
         }
 
-        where.innerHTML = `<div class="col-md-12 ${colClass} mb-3">
+        let date = (details === null) ? '¯\\_(ツ)_/¯' : this.parseToReadableDate(details.date);
+        where.innerHTML += `<div class="col-md-12 ${colClass} mb-3">
             <div class="card">
                 <div class="card-header text-center bg-warning">
-                    <p class="mb-0"><b>${this.parseToReadableDate(details.date)}</b></p>
+                    <p class="mb-0"><b>${date}</b></p>
                 </div>
                 <div class="card-body" style="padding: 10px;">
                     ${classesHtml}
@@ -208,13 +214,19 @@ const SchedulinatorViewer = {
     },
     renderMetadata(data) {
         return `<h1 class="mb-0 font-x-large">${data.major}</h1>
-        <small>Semester ${data.semester}, ${data.class}, ${data.academicYear}</small>`;
+        <p class="mb-0"><small>Semester ${data.semester}, ${data.class}, ${data.academicYear}</small></p>`;
     },
     runSpecificDate(date) {
+        date = Schedulinator.dateToString(date);
+
+        this.elements.today.innerHTML = '';
         this.renderDayCard(this.elements.today, {
             date: Schedulinator.stringToDate(date),
             schedule: Schedulinator.getScheduleByDate(date)
         });
+
+        this.elements.upcoming.innerHTML = '';
+        this.renderDayCard(this.elements.upcoming, Schedulinator.findScheduleAfter(date));
     },
     handleScheduleCode(form) {
         if (typeof DEFAULT_SCHEDULE === "undefined") {
@@ -231,6 +243,18 @@ const SchedulinatorViewer = {
 
         form.code.classList.remove('is-invalid');
 
+        // TODO: Save schedule code
+
+        return false;
+    },
+    handleDateInput(form) {
+        const futureElement = document.getElementById('tooFarFutureWarning');
+        if (futureElement) {
+            futureElement.classList.remove('d-none');
+            futureElement.classList.add('show');
+        }
+        document.getElementById('navbar').classList.remove('show');
+        this.runSpecificDate(new Date(form.date.value));
         return false;
     },
     run() {
@@ -243,20 +267,14 @@ const SchedulinatorViewer = {
         }
         this.elements.metadata.innerHTML = this.renderMetadata(meta);
 
-        // Handle today's classes
-        this.renderDayCard(this.elements.today, {
-            date: new Date,
-            schedule: Schedulinator.getTodaysSchedule()
-        });
-
-        // Handle upcoming classes
-        this.renderDayCard(this.elements.upcoming, Schedulinator.findScheduleAfter(Schedulinator.dateToString(new Date)));
+        // Render schedule
+        this.runSpecificDate(new Date);
     }
 }
 
-// var display1 = document.querySelector('#time1'),
-//     display2 = document.querySelector('#time2'),
-//     timer1 = new CountDownTimer(5),
-//     timer2 = new CountDownTimer(10);
-// timer1.onTick(format(display1)).onTick(restart).start();
-// timer2.onTick(format(display2)).start();
+addEventListener("DOMContentLoaded", (event) => {
+    let today = new Date;
+    document.getElementById('classDate').value = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    
+    SchedulinatorViewer.run();
+});
