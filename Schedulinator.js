@@ -342,8 +342,8 @@ const Schedulinator = {
     loadData(rebuild = false) {
         raw = localStorage.getItem(`Schedulinator_raw`);
         if (null == raw) {
-            alert("DEV ONLY: No schedule set. Loading default schedule.");
-            this.setRawData(DEFAULT_SCHEDULE);
+            // Default schedule code
+            this.setRawData(DEFAULT_SCHEDULE['S11-IFBSORE-2324']);
             raw = localStorage.getItem(`Schedulinator_raw`);
         }
         this.data.raw = JSON.parse(raw);
@@ -355,8 +355,5 @@ const Schedulinator = {
             cache = localStorage.getItem(`Schedulinator_cached`);
         }
         this.data.cached = JSON.parse(cache);
-        console.log("Schedule data loaded");
     }
 };
-
-Schedulinator.loadData();

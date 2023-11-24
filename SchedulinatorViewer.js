@@ -217,15 +217,28 @@ const SchedulinatorViewer = {
         });
     },
     handleScheduleCode(form) {
-        debugger;
+        if (typeof DEFAULT_SCHEDULE === "undefined") {
+            form.code.classList.add('is-invalid');
+            return false;
+        }
+        if (!DEFAULT_SCHEDULE[form.code.value]) {
+            form.code.classList.add('is-invalid');
+            return false;
+        }
+        Schedulinator.setRawData(DEFAULT_SCHEDULE[form.code.value]);
+        Schedulinator.loadData(true);
+        this.run();
+
+        form.code.classList.remove('is-invalid');
+
         return false;
     },
     run() {
+        Schedulinator.loadData();
+
         // Handle metadata
         let meta = Schedulinator.getMetadata();
         if (!meta) {
-            // Not ready
-            // Ask user to enter class code or something
             return;
         }
         this.elements.metadata.innerHTML = this.renderMetadata(meta);
