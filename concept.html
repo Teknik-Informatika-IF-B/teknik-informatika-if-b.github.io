@@ -35,18 +35,18 @@
                                 <a class="nav-link" href="#">Editor</a>
                             </li>
                         </ul>
-                        <form class="d-flex mb-1" style="max-width: 400px;" onsubmit="return SchedulinatorViewer.handleDateInput(this)">
+                        <form class="d-flex mb-1" onsubmit="return SchedulinatorViewer.handleDateInput(this)">
                             <div class="input-group">
                                 <input type="date" class="form-control" id="classDate" name="date" required>
                                 <button class="btn btn-outline-success" type="submit">Lihat</button>
                             </div>
                         </form>
-                        <form class="d-flex" style="max-width: 400px;" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
+                        <form class="d-flex" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
                             <div class="input-group has-validation">
                                 <input type="text" name="code" class="form-control" placeholder="Masukkan kode jadwal"
                                     value="S11-IFBSORE-2324" required>
                                 <button class="btn btn-outline-success" type="submit">Terapkan</button>
-                                <div id="inputCodeFeedback" class="invalid-feedback">
+                                <div id="inputCodeFeedback" class="invalid-feedback" style="max-width: 300px;">
                                     Kode jadwal tidak ditemukan atau tidak valid.
                                 </div>
                             </div>
@@ -85,8 +85,22 @@
             </div>
 
             <div id="scheduleToday">
-                <div id="todayClasses" class="row justify-content-center"></div>
-                <div id="upcomingClasses" class="row justify-content-center"></div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-lg-4">
+                        <div id="todayClasses" class="row justify-content-center"></div>
+                        <div id="upcomingClasses" class="row justify-content-center"></div>
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                        <div class="card">
+                            <div class="card-header text-center bg-primary">
+                                <p class="mb-0"><b>Settings</b></p>
+                            </div>
+                            <div class="card-body" style="padding: 10px;">
+                                ${classesHtml}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="scheduleAll">

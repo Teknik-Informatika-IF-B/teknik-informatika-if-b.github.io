@@ -49,7 +49,6 @@ const SchedulinatorViewer = {
     renderDayCard(where, details) {
         let classesHtml = '';
         let classesTimers = [];
-        let colClass = "col-lg-4";
 
         if (details === null) {
             classesHtml = `<div class="alert alert-info mb-0 text-center" role="alert">
@@ -72,7 +71,7 @@ const SchedulinatorViewer = {
         }
 
         let date = (details === null) ? '¯\\_(ツ)_/¯' : this.parseToReadableDate(details.date);
-        where.innerHTML += `<div class="col-md-12 ${colClass} mb-3">
+        where.innerHTML += `<div class="col-md-12 col-lg-12 mb-3">
             <div class="card">
                 <div class="card-header text-center bg-warning">
                     <p class="mb-0"><b>${date}</b></p>
