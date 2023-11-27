@@ -97,9 +97,9 @@ const SchedulinatorViewer = {
                 ? this.timer.secondsUntil(timer.toleranceStop)
                 : 0;
 
-            if (toleranceDuration > 0) {
+            if (toleranceDuration > 0 && regularDuration > 0) {
                 toleranceDuration -= regularDuration;
-            } else {
+            } else if (toleranceDuration < 0) {
                 toleranceDuration = 0;
             }
 
