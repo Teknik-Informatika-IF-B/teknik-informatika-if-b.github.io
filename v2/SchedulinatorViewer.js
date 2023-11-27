@@ -1,4 +1,5 @@
 const SchedulinatorViewer = {
+    metadata: null,
     elements: {
         scheduleToday: document.getElementById('scheduleToday'),
         scheduleAll: document.getElementById('scheduleAll'),
@@ -16,6 +17,10 @@ const SchedulinatorViewer = {
                     (hours > 0 ? (hours < 10 ? '0' + hours : hours) + ':' : '') +
                     (minutes < 10 ? '0' + minutes : minutes) + ':' +
                     (seconds < 10 ? '0' + seconds : seconds);
+                if (days + hours + minutes + seconds < 1) {
+                    // For tolerance timer
+                    display.textContent = 'HABIS';
+                }
             }
         },
         randomId(length = 8) {
@@ -65,7 +70,7 @@ const SchedulinatorViewer = {
     
             if (!details.schedule) {
                 classesHtml = `<div class="alert alert-info mb-0 text-center" role="alert">
-                    <p class="mb-0"><b>Tidak ada kelas</b><br>Curiga data tidak akurat?</p>
+                    <p class="mb-0"><b>Tidak ada kelas</b></p>
                 </div>`;
             }
         }
@@ -212,10 +217,14 @@ const SchedulinatorViewer = {
         }
     },
     renderMetadata(data) {
+        this.metadata = data;
         return `<h1 class="mb-0 font-x-large">${data.major}</h1>
         <p class="mb-0"><small>Semester ${data.semester}, ${data.class}, ${data.academicYear}</small></p>`;
     },
     runSpecificDate(date) {
+        if (!this.metadata) {
+            return false;
+        }
         date = Schedulinator.dateToString(date);
 
         this.elements.today.innerHTML = '';
@@ -247,14 +256,23 @@ const SchedulinatorViewer = {
         return false;
     },
     handleDateInput(form) {
+        if (!this.metadata) {
+            return false;
+        }
         const futureElement = document.getElementById('tooFarFutureWarning');
         if (futureElement) {
+            document.getElementById('fooFarFutureWarningDate').textContent = this.parseToReadableDate(Schedulinator.stringToDate(this.metadata.updated))
             futureElement.classList.remove('d-none');
             futureElement.classList.add('show');
         }
         document.getElementById('navbar').classList.remove('show');
         this.runSpecificDate(new Date(form.date.value));
         return false;
+    },
+    handleClearData() {
+        Schedulinator.clearStoredData();
+        location.reload();
+        return true;
     },
     run() {
         Schedulinator.loadData();
@@ -268,12 +286,18 @@ const SchedulinatorViewer = {
 
         // Render schedule
         this.runSpecificDate(new Date);
+
+        // Show
+        document.getElementById('scheduleToday').classList.remove('d-none');
     }
 }
 
 addEventListener("DOMContentLoaded", (event) => {
+    // Prefill the date input
     let today = new Date;
-    document.getElementById('classDate').value = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    [...document.getElementsByClassName('classDate')].forEach(e => {
+        e.value = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    });
     
     SchedulinatorViewer.run();
 });

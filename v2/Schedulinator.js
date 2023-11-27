@@ -331,10 +331,16 @@ const Schedulinator = {
         return null;
     },
     setRawData(schedule) {
-        return localStorage.setItem(`Schedulinator_raw`, JSON.stringify(schedule));
+        return localStorage.setItem('Schedulinator_raw', JSON.stringify(schedule));
     },
     setCacheData(cached) {
-        return localStorage.setItem(`Schedulinator_cached`, JSON.stringify(cached));
+        return localStorage.setItem('Schedulinator_cached', JSON.stringify(cached));
+    },
+    clearStoredData() {
+        localStorage.removeItem('Schedulinator_raw');
+        localStorage.removeItem('Schedulinator_cached');
+        console.log('Schedulinator: Cleared all stored data.')
+        return true;
     },
     loadData(rebuild = false) {
         raw = localStorage.getItem(`Schedulinator_raw`);
