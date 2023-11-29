@@ -72,7 +72,7 @@ const DEFAULT_SCHEDULE = {
                     location: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                 },
                 {
-                    subject: "Pengembangan Karakter",
+                    subject: "Pengembangan Karakter: Kepemimpinan",
                     day: [3],
                     type: "REGULAR",
                     classroom: "B.T3/L2",
