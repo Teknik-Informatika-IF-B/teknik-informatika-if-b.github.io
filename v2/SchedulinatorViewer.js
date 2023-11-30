@@ -142,12 +142,13 @@ const SchedulinatorViewer = {
         let classroomAndTimeIndicator = '';
         if (["REGULAR", "REPLACEMENT", "EXAM"].includes(details.type)) {
             meetingTypeIndicator = `<li class="list-group-item bg-${details.location.color}"><b class="text-white">${details.location.text} (PERT. ${details.meetingCount})</b></li>`;
+            classroomIndicator = (["LANGSUNG"].includes(details.location.text)) ? `<div class="col-6 border-end align-self-center">
+                <b>${details.classroom ?? "Lihat Kartu Ujian"}</b>
+            </div>` : '';
             classroomAndTimeIndicator = `<li class="list-group-item">
                 <div class="row">
-                    <div class="col-6 border-end align-self-center">
-                        <b>${details.classroom ?? "Lihat Kartu Ujian"}</b>
-                    </div>
-                    <div class="col-6 border-start align-self-center">
+                    ${classroomIndicator}
+                    <div class="col-${(classroomIndicator) ? '6 border-start' : '12'} align-self-center">
                         <b>${details.time.start} — ${details.time.end}</b>
                     </div>
                 </div>
@@ -202,12 +203,12 @@ const SchedulinatorViewer = {
 
         return {
             html:
-                `<div class="col-12">
-                <div class="card mb-3">
+                `<div class="col-12 mb-3-notlast">
+                <div class="card">
                     <ul class="list-group list-group-flush text-center">
                         ${examIndicator}
+                        <li class="list-group-item bg-grey"><b class="font-larger">${details.subject}</b></li>
                         ${meetingTypeIndicator}
-                        <li class="list-group-item"><b class="font-larger">${details.subject}</b></li>
                         ${classroomAndTimeIndicator}
                         ${timerIndicator}
                     </ul>
