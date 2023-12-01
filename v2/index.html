@@ -26,13 +26,13 @@
                     <div class="collapse navbar-collapse" id="navbar">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" href="#">Jadwal Hari Ini</a>
+                                <a class="nav-link active" role="button" onclick="SchedulinatorViewer.navigation.to('today')">Jadwal Hari Ini</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Lihat Semua Jadwal</a>
+                                <a class="nav-link" role="button" onclick="SchedulinatorViewer.navigation.to('all')">Lihat Semua Jadwal</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Editor</a>
+                                <a class="nav-link" role="button" onclick="SchedulinatorViewer.navigation.to('editor')">Editor</a>
                             </li>
                         </ul>
                         <form class="d-flex mb-2 d-lg-none d-xl-none"
@@ -46,7 +46,7 @@
                             onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
                             <div class="input-group has-validation">
                                 <input type="text" name="code" class="form-control" placeholder="Masukkan kode jadwal"
-                                    value="S11-IFBSORE-2324" required>
+                                    value="" required>
                                 <button class="btn btn-success" type="submit">Terapkan</button>
                                 <div class="invalid-feedback inputCodeFeedback" style="max-width: 300px;">
                                     Kode jadwal tidak ditemukan atau tidak valid.
@@ -60,16 +60,22 @@
                 <div class="col-12">
                     <div class="container-fluid">
                         <hr style="margin-bottom: 0.5rem;margin-top: 0;">
-                        <div id="classMetadata">
-                            <p><b>Sistem Informasi Jadwal Perkuliahan</b></p>
-                            <p>Untuk memulai melihat jadwal perkuliahan Anda, silahkan masukkan kode jadwal, lalu tekan
-                                Terapkan.</p>
-                            <form class="d-flex" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
-                                <input class="form-control me-2" type="text" name="code"
-                                    placeholder="Masukkan kode jadwal">
-                                <button class="btn btn-outline-success" type="submit">Terapkan</button>
-                            </form>
+                        <div class="d-none row justify-content-center" id="scheduleCodePrompt">
+                            <div class="col-12">
+                                <p>
+                                    <b>Sistem Informasi Jadwal Perkuliahan</b>
+                                    <br>Silahkan masukkan kode jadwal anda dibawah ini dan tekan Terapkan.
+                                </p>
+                            </div>
+                            <div class="col-sm-12 col-lg-4">
+                                <form class="d-flex" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
+                                    <input class="form-control me-2" type="text" name="code"
+                                        placeholder="Masukkan kode jadwal">
+                                    <button class="btn btn-outline-success" type="submit">Terapkan</button>
+                                </form>
+                            </div>
                         </div>
+                        <div id="classMetadata"></div>
                         <hr style="margin-bottom: 0;margin-top: 0.5rem;">
                     </div>
                 </div>
@@ -90,7 +96,7 @@
                 </p>
             </div>
 
-            <div id="scheduleToday" class="d-none">
+            <div id="page_today" class="d-none">
                 <div class="row justify-content-center">
                     <div class="col-sm-12 col-lg-4">
                         <div id="todayClasses" class="row justify-content-center"></div>
@@ -102,16 +108,18 @@
                                 <p class="mb-0"><b>Settings</b></p>
                             </div>
                             <div class="card-body" style="padding: 10px;">
-                                <form class="d-flex mb-2" onsubmit="return SchedulinatorViewer.handleDateInput(this)">
+                                <form class="mb-2" onsubmit="return SchedulinatorViewer.handleDateInput(this)">
+                                    <label class="form-label">Lihat jadwal pada tanggal:</label>
                                     <div class="input-group">
-                                        <input type="date" class="form-control classDate" name="date" required>
+                                        <input type="date" class="form-control classDate" name="date" id="date" required>
                                         <button class="btn btn-success" type="submit">Lihat</button>
                                     </div>
                                 </form>
-                                <form class="d-flex" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
+                                <form class="" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
+                                    <label class="form-label">Ganti kode jadwal:</label>
                                     <div class="input-group has-validation">
                                         <input type="text" name="code" class="form-control"
-                                            placeholder="Masukkan kode jadwal" value="S11-IFBSORE-2324" required>
+                                            placeholder="Masukkan kode jadwal" value="" required>
                                         <button class="btn btn-success" type="submit">Terapkan</button>
                                         <div class="invalid-feedback inputCodeFeedback" style="max-width: 300px;">
                                             Kode jadwal tidak ditemukan atau tidak valid.
@@ -124,18 +132,39 @@
                 </div>
             </div>
 
-            <div id="scheduleAll" class="d-none">
+            <div id="page_all" class="d-none">
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Readable</th>
+                                        <th>Pertemuan</th>
+                                        <th>Mata Kuliah</th>
+                                        <th>Lokasi</th>
+                                        <th>Tipe</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scheduleAll_data"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div>
                 <div class="row">
                     <div class="col-12 text-center justify-content-center">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                        <button class="btn btn-primary mb-2 mt-4" type="button" data-bs-toggle="collapse"
                             data-bs-target="#deleteCollapsible" aria-expanded="false" aria-controls="deleteCollapsible">
                             Show/hide hidden settings</button>
-                        <div class="collapse" id="deleteCollapsible">
-                            <div class="card card-body">
-                                <button class="btn btn-danger" onclick="SchedulinatorViewer.handleClearData()">Clear all saved data</button>
+                        <div class="collapse row justify-content-center" id="deleteCollapsible">
+                            <div class="col-sm-12 col-lg-4">
+                                <div class="card card-body">
+                                    <button class="btn btn-danger" onclick="SchedulinatorViewer.handleClearData()">Clear all saved data</button>
+                                </div>
                             </div>
                         </div>
                     </div>

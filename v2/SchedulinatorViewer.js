@@ -8,7 +8,28 @@ const SchedulinatorViewer = {
         metadata: document.getElementById('classMetadata')
     },
     navigation: {
+        pagesElement: {
+            today: document.getElementById('page_today'),
+            all: document.getElementById('page_all')
+        },
+        afterNavigationCallback: {
+            all: function() {
+                SchedulinatorViewer.handleShowAllData();
+            }
+        },
+        to(page) {
+            if (!Object.keys(this.pagesElement).includes(page)) {
+                return false;
+            }
+            Object.values(this.pagesElement).forEach(e => {
+                e.classList.add('d-none');
+            });
+            document.getElementById(`page_${page}`).classList.remove('d-none');
 
+            if (Object.keys(this.afterNavigationCallback).includes(page)) {
+                this.afterNavigationCallback[page]();
+            }
+        }
     },
     timer: {
         format(display) {
@@ -207,7 +228,7 @@ const SchedulinatorViewer = {
                 <div class="card">
                     <ul class="list-group list-group-flush text-center">
                         ${examIndicator}
-                        <li class="list-group-item bg-grey"><b class="font-larger">${details.subject}</b></li>
+                        <li class="list-group-item bg-grey text-white"><b class="font-larger">${details.subject}</b></li>
                         ${meetingTypeIndicator}
                         ${classroomAndTimeIndicator}
                         ${timerIndicator}
@@ -251,9 +272,7 @@ const SchedulinatorViewer = {
         this.run();
 
         form.code.classList.remove('is-invalid');
-
-        // TODO: Save schedule code
-
+        document.getElementById('scheduleCodePrompt').classList.add('d-none');
         return false;
     },
     handleDateInput(form) {
@@ -270,6 +289,29 @@ const SchedulinatorViewer = {
         this.runSpecificDate(new Date(form.date.value));
         return false;
     },
+    handleShowAllData() {
+        if (!this.metadata) {
+            return false;
+        }
+        const cached = Schedulinator.data.cached;
+        let dataHtml = '';
+        for (key in cached) {
+            let shouldBold = true;
+            Object.values(cached[key]).forEach(e => {
+                const readable = this.parseToReadableDate(Schedulinator.stringToDate(key));
+                dataHtml += `<tr>
+                    <td>${shouldBold ? `<b>${key}</b>` : key}</td>
+                    <td>${shouldBold ? `<b>${readable}</b>` : readable}</td>
+                    <td>${e.meetingCount ?? '-'}</td>
+                    <td>${e.subject}</td>
+                    <td>${e.location?.text ?? '-'}</td>
+                    <td>${e.type}</td>
+                </tr>`;
+                shouldBold = false;
+            });
+        }
+        document.getElementById('scheduleAll_data').innerHTML = dataHtml;
+    },
     handleClearData() {
         Schedulinator.clearStoredData();
         location.reload();
@@ -281,6 +323,7 @@ const SchedulinatorViewer = {
         // Handle metadata
         let meta = Schedulinator.getMetadata();
         if (!meta) {
+            document.getElementById('scheduleCodePrompt').classList.remove('d-none');
             return;
         }
         this.elements.metadata.innerHTML = this.renderMetadata(meta);
@@ -289,15 +332,16 @@ const SchedulinatorViewer = {
         this.runSpecificDate(new Date);
 
         // Show
-        document.getElementById('scheduleToday').classList.remove('d-none');
+        this.navigation.to('today');
+        document.getElementById('page_today').classList.remove('d-none');
     }
 }
 
 addEventListener("DOMContentLoaded", (event) => {
     // Prefill the date input
     let today = new Date;
-    [...document.getElementsByClassName('classDate')].forEach(e => {
-        e.value = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    [...document.getElementsByClassName("classDate")].forEach(e => {
+        e.value = `${today.getFullYear()}-${today.getMonth() + 1}-${(today.getDate()) < 10 ? '0' : ''}${today.getDate()}`;;
     });
     
     SchedulinatorViewer.run();

@@ -151,7 +151,7 @@ const Schedulinator = {
         }
 
         // Build override index
-        raw.schedule.overrides.forEach(o => {
+        raw.schedules.overrides.forEach(o => {
             const dateIsObject = typeof o.date === 'object' && o.date !== null;
             const overrideKey = dateIsObject ? "ranged" : o.date;
 
@@ -164,13 +164,13 @@ const Schedulinator = {
         });
 
         // Build events index
-        raw.schedule.events.forEach(e => {
+        raw.schedules.events.forEach(e => {
             eventsIndex[e.type] = eventsIndex[e.type] || [];
             eventsIndex[e.type].push(e);
         });
 
         // Create class meeting count and subject index
-        raw.schedule.regularClasses.forEach(c => {
+        raw.schedules.regularClasses.forEach(c => {
             meetingIndex[c.subject] = 0;
             subjectIndex[c.subject] = { ...c };
         });
@@ -203,7 +203,7 @@ const Schedulinator = {
                     const thisWeek = (startingDate.getWeek() - startingWeek + 52) % 52;
                     const thisDay = startingDate.getDay();
 
-                    raw.schedule.regularClasses.forEach(c => {
+                    raw.schedules.regularClasses.forEach(c => {
                         if (c.day.includes(thisDay)) {
                             classesInDay.push(c);
                         }
@@ -245,17 +245,8 @@ const Schedulinator = {
                 return { classesToday, showBreaks };
             })();
 
-            if (toPush.showBreaks) {
-                eventsIndex["BREAK"].forEach(e => {
-                    // Possible edge case: When there's only class slot in a day
-                    // Then the break time would be redundant.
-                    // Probably not going to happen anytime soon...
-                    toPush.classesToday.push(e);
-                });
-            }
-
             const sortedClasses = [];
-            toPush.classesToday.forEach(c => {
+            const pushToSorted = (c => {
                 // Sort through the classesToday and separate out the times
                 if (c.time) {
                     c.time.forEach(t => {
@@ -264,7 +255,13 @@ const Schedulinator = {
                 } else {
                     sortedClasses.push({ ...c });
                 }
-            });
+            })
+
+            toPush.classesToday.forEach(c => pushToSorted(c));
+            if (toPush.showBreaks && sortedClasses.length > 1) {
+                eventsIndex["BREAK"].forEach(e => pushToSorted(e));
+            }
+            
             sortedClasses.sort((a, b) => {
                 const timeA = a.time ? Number(a.time.start.replace(":", "")) : null;
                 const timeB = b.time ? Number(b.time.start.replace(":", "")) : null;

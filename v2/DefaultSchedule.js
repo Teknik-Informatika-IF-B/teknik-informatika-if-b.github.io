@@ -10,7 +10,7 @@ const DEFAULT_SCHEDULE = {
             academicYear: "2023/2024",
             updated: "24-11-2023"
         },
-        schedule: {
+        schedules: {
             regularClasses: [
                 /**
                  * @property {string} subject Subject name
@@ -118,7 +118,7 @@ const DEFAULT_SCHEDULE = {
                         {
                             start: "19:30",
                             end: "20:50",
-                            tolerance: "19:40",
+                            tolerance: "19:35",
                         }
                     ],
                     location: [1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 2, 2],
