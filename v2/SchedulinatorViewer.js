@@ -293,8 +293,39 @@ const SchedulinatorViewer = {
         if (!this.metadata) {
             return false;
         }
-        const cached = Schedulinator.data.cached;
+
+        const regularClasses = Object.values(Schedulinator.data.raw.schedules.regularClasses);
         let dataHtml = '';
+        let locations = regularClasses.map((e) => {
+            return {
+                subject: e.subject,
+                location: e.location.map((l) => Schedulinator.translateLocationId(l))
+            }
+        });
+        locations.forEach((e) => {
+            let list = '';
+            e.location.forEach((l) => {
+                list += `<td class="bg-${l.color} text-white align-middle text-center"><b>${l.text}</b></td>`;
+            })
+            dataHtml += `<tr>
+                <td><b>${e.subject}</b></td>
+                ${list}
+            </tr>`;
+        });
+        document.getElementById('scheduleAll_location').innerHTML = dataHtml;
+
+        const metadata = Schedulinator.data.raw.metadata;
+        dataHtml = '';
+        for (key in metadata) {
+            dataHtml += `<tr>
+                <td>${key}</td>
+                <td>${metadata[key]}</td>
+            </tr>`;
+        }
+        document.getElementById('scheduleAll_meta').innerHTML = dataHtml;
+
+        const cached = Schedulinator.data.cached;
+        dataHtml = '';
         for (key in cached) {
             let shouldBold = true;
             Object.values(cached[key]).forEach(e => {
