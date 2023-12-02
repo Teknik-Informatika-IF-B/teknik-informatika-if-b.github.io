@@ -83,7 +83,7 @@ const SchedulinatorViewer = {
         } else {
             if (details.schedule) {
                 details.schedule.forEach(e => {
-                    classes = this.renderClassCard({ ...e, ...{ date: details.date } });
+                    classes = this.renderClassCard({ ...e, date: details.date });
                     classesHtml += classes.html;
                     classesTimers.push(classes.timer);
                 });
@@ -296,13 +296,10 @@ const SchedulinatorViewer = {
 
         const regularClasses = Object.values(Schedulinator.data.raw.schedules.regularClasses);
         let dataHtml = '';
-        let locations = regularClasses.map((e) => {
-            return {
-                subject: e.subject,
-                location: e.location.map((l) => Schedulinator.translateLocationId(l))
-            }
+        let classes = regularClasses.map((e) => {
+            return {...e, location: e.location.map((l) => Schedulinator.translateLocationId(l))}
         });
-        locations.forEach((e) => {
+        classes.forEach((e) => {
             let list = '';
             e.location.forEach((l) => {
                 list += `<td class="bg-${l.color} text-white align-middle text-center"><b>${l.text}</b></td>`;
@@ -313,6 +310,22 @@ const SchedulinatorViewer = {
             </tr>`;
         });
         document.getElementById('scheduleAll_location').innerHTML = dataHtml;
+
+        dataHtml = '';
+        let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        classes.forEach((e) => {
+            e.time.forEach((t) => {
+                dataHtml += `<tr>
+                    <td>${e.subject}</td>
+                    <td>${days[e.day]}</td>
+                    <td>${e.classroom}</td>
+                    <td>${t.start}</td>
+                    <td>${t.end}</td>
+                    <td>${t.tolerance}</td>
+                </tr>`;
+            })
+        });
+        document.getElementById('scheduleAll_regular').innerHTML = dataHtml;
 
         const metadata = Schedulinator.data.raw.metadata;
         dataHtml = '';
@@ -333,9 +346,11 @@ const SchedulinatorViewer = {
                 dataHtml += `<tr>
                     <td>${shouldBold ? `<b>${key}</b>` : key}</td>
                     <td>${shouldBold ? `<b>${readable}</b>` : readable}</td>
+                    <td>${e.time?.start ?? '-'}</td>
+                    <td>${e.time?.end ?? '-'}</td>
                     <td>${e.meetingCount ?? '-'}</td>
                     <td>${e.subject}</td>
-                    <td>${e.location?.text ?? '-'}</td>
+                    <td class="bg-${(e.location?.color) ? e.location?.color + ' text-white fw-bold' : '-'}"> ${e.location?.text ?? '-'}</td>
                     <td>${e.type}</td>
                 </tr>`;
                 shouldBold = false;

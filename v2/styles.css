@@ -50,3 +50,9 @@ body {
 .font-larger {
     font-size: larger;
 }
+
+th:first-child, td:first-child
+{
+    position: sticky;
+    left: 0px;
+}
