@@ -10,11 +10,15 @@ const SchedulinatorViewer = {
     navigation: {
         pagesElement: {
             today: document.getElementById('page_today'),
-            all: document.getElementById('page_all')
+            all: document.getElementById('page_all'),
+            editor: document.getElementById('page_editor')
         },
         afterNavigationCallback: {
             all: function() {
                 SchedulinatorViewer.handleShowAllData();
+            },
+            editor: function() {
+                
             }
         },
         to(page) {
@@ -379,7 +383,9 @@ const SchedulinatorViewer = {
 
         // Show
         this.navigation.to('today');
-        document.getElementById('page_today').classList.remove('d-none');
+
+        // TODO: TEMPORARY. PLEASE REMOVE
+        this.navigation.to('editor');
     }
 }
 
