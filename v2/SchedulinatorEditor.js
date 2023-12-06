@@ -5,5 +5,8 @@ const SchedulinatorEditor = {
     schedule: {
         new() {},
         load() {},
-    }
+    },
+    handleAddRegularClass() {},
+    handleAddEvent() {},
+    init() {},
 }
