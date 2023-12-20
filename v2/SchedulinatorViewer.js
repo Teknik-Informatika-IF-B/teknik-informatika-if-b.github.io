@@ -385,7 +385,7 @@ const SchedulinatorViewer = {
         this.navigation.to('today');
 
         // TODO: TEMPORARY. PLEASE REMOVE
-        this.navigation.to('editor');
+        //this.navigation.to('editor');
     }
 }
 

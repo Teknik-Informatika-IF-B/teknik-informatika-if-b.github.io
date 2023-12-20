@@ -244,13 +244,26 @@ const DEFAULT_SCHEDULE = {
                     location: 1,
                 },
                 {
-                    subject: "Libur Tahun Baru",
-                    date: "01-01-2024",
+                    subject: "Libur Natal & Tahun Baru",
+                    date: {
+                        start: "25-12-2023",
+                        end: "02-01-2024"
+                    },
                     type: "HOLIDAY"
                 },
                 {
                     subject: "Sistem Otomasi Perkantoran",
                     date: "15-01-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pengembangan Karakter: Kepemimpinan",
+                    date: "03-01-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pemrograman Komputer PRAKTEK",
+                    date: "20-12-2023",
                     type: "REPLACEMENT",
                 },
             ]
