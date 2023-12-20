@@ -252,8 +252,8 @@ const DEFAULT_SCHEDULE = {
                     type: "HOLIDAY"
                 },
                 {
-                    subject: "Sistem Otomasi Perkantoran",
-                    date: "15-01-2024",
+                    subject: "Pemrograman Komputer PRAKTEK",
+                    date: "20-12-2023",
                     type: "REPLACEMENT",
                 },
                 {
@@ -262,8 +262,8 @@ const DEFAULT_SCHEDULE = {
                     type: "REPLACEMENT",
                 },
                 {
-                    subject: "Pemrograman Komputer PRAKTEK",
-                    date: "20-12-2023",
+                    subject: "Sistem Otomasi Perkantoran",
+                    date: "15-01-2024",
                     type: "REPLACEMENT",
                 },
             ]
