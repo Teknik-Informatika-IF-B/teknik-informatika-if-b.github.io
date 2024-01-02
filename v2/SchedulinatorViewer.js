@@ -230,9 +230,9 @@ const SchedulinatorViewer = {
             html:
                 `<div class="col-12 mb-3-notlast">
                 <div class="card">
-                    <ul class="list-group list-group-flush text-center">
+                    <ul class="list-group list-group-flush text-center border">
                         ${examIndicator}
-                        <li class="list-group-item bg-grey text-white"><b class="font-larger">${details.subject}</b></li>
+                        <li class="list-group-item"><b class="font-larger">${details.subject}</b></li>
                         ${meetingTypeIndicator}
                         ${classroomAndTimeIndicator}
                         ${timerIndicator}
