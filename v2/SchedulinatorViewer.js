@@ -368,7 +368,7 @@ const SchedulinatorViewer = {
         return true;
     },
     run() {
-        Schedulinator.loadData();
+        Schedulinator.init();
 
         // Handle metadata
         let meta = Schedulinator.getMetadata();
