@@ -374,7 +374,16 @@ const SchedulinatorViewer = {
         let meta = Schedulinator.getMetadata();
         if (!meta) {
             document.getElementById('scheduleCodePrompt').classList.remove('d-none');
-            return;
+
+            // Get class code if present in URL
+            let url = new URL(window.location.href);
+            let params = new URLSearchParams(url.search);
+            let code = params.get('code');
+            if (code) {
+                document.getElementById('classCodeForm_input').value = code;
+                this.handleScheduleCode(document.getElementById('classCodeForm'));
+                return;
+            }
         }
         this.elements.metadata.innerHTML = this.renderMetadata(meta);
 
@@ -389,7 +398,7 @@ const SchedulinatorViewer = {
     }
 }
 
-addEventListener("DOMContentLoaded", (event) => {
+addEventListener("DOMContentLoaded", (e) => {
     // Prefill the date input
     let today = new Date;
     [...document.getElementsByClassName("classDate")].forEach(e => {

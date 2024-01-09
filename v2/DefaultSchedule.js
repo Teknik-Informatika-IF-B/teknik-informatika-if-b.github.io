@@ -8,7 +8,7 @@ const DEFAULT_SCHEDULE = {
             end: "08-03-2024", // 8 Mar 2024
             semester: 1,
             academicYear: "2023/2024",
-            updated: "24-11-2023"
+            updated: "9-01-2024"
         },
         schedules: {
             regularClasses: [
@@ -272,6 +272,16 @@ const DEFAULT_SCHEDULE = {
                     type: "REPLACEMENT",
                 },
                 {
+                    subject: "Pemrograman Komputer PRAKTEK",
+                    date: "17-01-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pemrograman Komputer TEORI",
+                    date: "16-01-2024",
+                    type: "REPLACEMENT",
+                },
+                {
                     subject: "Minggu Tenang",
                     date: {
                         start: "15-01-2024",
@@ -296,7 +306,7 @@ const DEFAULT_SCHEDULE = {
                 {
                     subject: "Wawasan Informatika",
                     examType: "UAS",
-                    date: "22-01-2024",
+                    date: "23-01-2024",
                     type: "EXAM",
                     classroom: "B.T3/L3,B.T5/L3",
                     time: [
@@ -310,7 +320,7 @@ const DEFAULT_SCHEDULE = {
                 {
                     subject: "Pemrograman Komputer TEORI",
                     examType: "UAS",
-                    date: "22-01-2024",
+                    date: "24-01-2024",
                     type: "EXAM",
                     classroom: null,
                     time: [
@@ -324,7 +334,7 @@ const DEFAULT_SCHEDULE = {
                 {
                     subject: "Pemrograman Komputer PRAKTEK",
                     examType: "UAS",
-                    date: "22-01-2024",
+                    date: "24-01-2024",
                     type: "EXAM",
                     classroom: null,
                     time: [
@@ -338,7 +348,7 @@ const DEFAULT_SCHEDULE = {
                 {
                     subject: "Sistem Otomasi Perkantoran",
                     examType: "UAS",
-                    date: "22-01-2024",
+                    date: "25-01-2024",
                     type: "EXAM",
                     classroom: "A.P3/L2 - Lab 1",
                     time: [
@@ -352,7 +362,7 @@ const DEFAULT_SCHEDULE = {
                 {
                     subject: "Pengembangan Karakter: Kepemimpinan",
                     examType: "UAS",
-                    date: "22-01-2024",
+                    date: "26-01-2024",
                     type: "EXAM",
                     classroom: null,
                     time: [
