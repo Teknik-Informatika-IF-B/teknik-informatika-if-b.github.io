@@ -230,9 +230,9 @@ const SchedulinatorViewer = {
             html:
                 `<div class="col-12 mb-3-notlast">
                 <div class="card">
-                    <ul class="list-group list-group-flush text-center">
+                    <ul class="list-group list-group-flush text-center border">
                         ${examIndicator}
-                        <li class="list-group-item bg-grey text-white"><b class="font-larger">${details.subject}</b></li>
+                        <li class="list-group-item"><b class="font-larger">${details.subject}</b></li>
                         ${meetingTypeIndicator}
                         ${classroomAndTimeIndicator}
                         ${timerIndicator}
@@ -368,13 +368,22 @@ const SchedulinatorViewer = {
         return true;
     },
     run() {
-        Schedulinator.loadData();
+        Schedulinator.init();
 
         // Handle metadata
         let meta = Schedulinator.getMetadata();
         if (!meta) {
             document.getElementById('scheduleCodePrompt').classList.remove('d-none');
-            return;
+
+            // Get class code if present in URL
+            let url = new URL(window.location.href);
+            let params = new URLSearchParams(url.search);
+            let code = params.get('code');
+            if (code) {
+                document.getElementById('classCodeForm_input').value = code;
+                this.handleScheduleCode(document.getElementById('classCodeForm'));
+                return;
+            }
         }
         this.elements.metadata.innerHTML = this.renderMetadata(meta);
 
@@ -385,11 +394,11 @@ const SchedulinatorViewer = {
         this.navigation.to('today');
 
         // TODO: TEMPORARY. PLEASE REMOVE
-        this.navigation.to('editor');
+        //this.navigation.to('editor');
     }
 }
 
-addEventListener("DOMContentLoaded", (event) => {
+addEventListener("DOMContentLoaded", (e) => {
     // Prefill the date input
     let today = new Date;
     [...document.getElementsByClassName("classDate")].forEach(e => {

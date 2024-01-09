@@ -306,6 +306,9 @@ const Schedulinator = {
     getAllSchedule() {
         return this.data.cached;
     },
+    getClassCode() {
+        return localStorage.getItem(`Schedulinator_classCode`);
+    },
     getTodaysSchedule() {
         return this.getScheduleByDate(this.dateToString(new Date));
     },
@@ -333,9 +336,15 @@ const Schedulinator = {
     setCacheData(cached) {
         return localStorage.setItem('Schedulinator_cached', JSON.stringify(cached));
     },
-    clearStoredData() {
+    setClassCode(code) {
+        return localStorage.setItem('Schedulinator_classCode', code);
+    },
+    clearStoredData(exceptMetadata = false) {
         localStorage.removeItem('Schedulinator_raw');
         localStorage.removeItem('Schedulinator_cached');
+        if (!exceptMetadata) {
+            localStorage.removeItem('Schedulinator_classCode');
+        }
         console.log('Schedulinator: Cleared all stored data.')
         return true;
     },
@@ -357,5 +366,22 @@ const Schedulinator = {
         }
         this.data.cached = JSON.parse(cache);
         console.log('Schedulinator: Cache loaded. System ready.');
+    },
+    init() {
+        this.loadData();
+        
+        const metadata = this.getMetadata();
+        if (typeof metadata == "undefined") {
+            return false;
+        }
+        const latest = DEFAULT_SCHEDULE[metadata.identifier];
+        if (metadata.updated != latest.metadata.updated) {
+            if (this.getClassCode() == null) {
+                this.setClassCode(metadata.identifier);
+            }
+            this.clearStoredData(true);
+            this.setRawData(latest);
+            this.loadData(true);
+        }
     }
 };

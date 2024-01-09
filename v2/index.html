@@ -68,9 +68,8 @@
                                 </p>
                             </div>
                             <div class="col-sm-12 col-lg-4">
-                                <form class="d-flex" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)">
-                                    <input class="form-control me-2" type="text" name="code"
-                                        placeholder="Masukkan kode jadwal">
+                                <form class="d-flex" onsubmit="return SchedulinatorViewer.handleScheduleCode(this)" id="classCodeForm">
+                                    <input class="form-control me-2" type="text" name="code" id="classCodeForm_input" placeholder="Masukkan kode jadwal">
                                     <button class="btn btn-outline-success" type="submit">Terapkan</button>
                                 </form>
                             </div>
@@ -237,6 +236,11 @@
                     <div class="col-12">
                         <h2 class="text-center">Schedule Editor</h2>
                         
+                        <div class="card">
+                            <ul class="list-group list-group-flush text-center">
+                                <li class="list-group-item bg-warning"><b class="font-larger">Regular Classes</b></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
