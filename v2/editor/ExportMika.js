@@ -1,4 +1,7 @@
-const MikaScraper = {
+const ExportMika = {
+    getInputByName(name) {
+        return document.querySelector(`input[name=${name}]`);
+    },
     scrapeRegularClasses() {
         let table = document.getElementsByClassName('mika-table')[0];
         let tableHeader = table.firstElementChild.firstElementChild;
@@ -17,15 +20,20 @@ const MikaScraper = {
             rows.push(row);
         });
 
-        let final = [];
+        let classes = [];
         rows.forEach(r => {
             let data = {};
             r.forEach((e, i) => {
                 data[headers[i]] = e;
             });
-            final.push(data);
+            classes.push(data);
         });
 
-        console.log(headers, rows, final);
+        return {
+            
+            academicYear: this.getInputByName('tahunAjaran').value,
+            
+            classes: classes
+        }
     }
 }
