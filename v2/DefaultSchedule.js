@@ -8,7 +8,7 @@ const DEFAULT_SCHEDULE = {
             end: "08-03-2024", // 8 Mar 2024
             semester: 1,
             academicYear: "2023/2024",
-            updated: "9-01-2024"
+            updated: "17-01-2024"
         },
         schedules: {
             regularClasses: [
@@ -270,6 +270,7 @@ const DEFAULT_SCHEDULE = {
                     subject: "Pengembangan Karakter: Kepemimpinan",
                     date: "17-01-2024",
                     type: "REPLACEMENT",
+                    classroom: "C.T6/L3",
                 },
                 {
                     subject: "Pemrograman Komputer PRAKTEK",
@@ -280,6 +281,7 @@ const DEFAULT_SCHEDULE = {
                     subject: "Pemrograman Komputer TEORI",
                     date: "16-01-2024",
                     type: "REPLACEMENT",
+                    classroom: "B.T2/L2",
                 },
                 {
                     subject: "Minggu Tenang",
