@@ -1,16 +1,6 @@
 const SchedulinatorEditor = {
-    data: {
-        saved: {
-            DEFAULT: {},
-            CUSTOM_1: {}
-        }
-    },
-    schedule: {
+    schedules: {
         new() {},
-        load() {},
-        list() {}
-    },
-    handleAddRegularClass() {},
-    handleAddEvent() {},
-    init() {},
+        open() {},
+    }
 }
