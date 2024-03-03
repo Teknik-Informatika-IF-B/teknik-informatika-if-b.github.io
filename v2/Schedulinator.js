@@ -120,7 +120,7 @@ const Schedulinator = {
                 color: "primary"
             }
         }[location] ?? {
-            text: "TIDAK ADA DATA",
+            text: "LOKASI TIDAK DITENTUKAN",
             color: "danger"
         };
     },
@@ -132,14 +132,16 @@ const Schedulinator = {
         }
 
         const builtSchedule = {};
-        const overrideIndex = {};
+        const overrideIndex = {
+            ranged: [],
+        };
         const eventsIndex = {};
         const meetingIndex = {};
         const subjectIndex = {};
         const raw = this.data.raw;
         const startingDate = this.stringToDate(raw.metadata.start);
         const endingDate = this.stringToDate(raw.metadata.end);
-        const startingWeek = startingDate.getWeek();
+        // const startingWeek = startingDate.getWeek();
         let countDays = 0;
 
         const isValidDate = (dateStr) => !isNaN(new Date(dateStr));
@@ -189,7 +191,7 @@ const Schedulinator = {
                     })
                     flag_hasOverrides = true;
                 } else {
-                    // Specific overrides overrides ranged overrides
+                    // Specific overrides trumps over ranged overrides
                     overrideIndex.ranged.forEach(o => {
                         const millis = startingDate.getTime();
                         if (millis <= o.end && millis >= o.start) {
@@ -200,7 +202,7 @@ const Schedulinator = {
                 }
 
                 if (!flag_hasOverrides) {
-                    const thisWeek = (startingDate.getWeek() - startingWeek + 52) % 52;
+                    // const thisWeek = (startingDate.getWeek() - startingWeek + 52) % 52;
                     const thisDay = startingDate.getDay();
 
                     raw.schedules.regularClasses.forEach(c => {

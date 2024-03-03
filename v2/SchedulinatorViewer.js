@@ -1,3 +1,12 @@
+const ViewerHelper = {
+    show(e) {
+        e.classList.remove('d-none')
+    },
+    hide(e) {
+        e.classList.add('d-none');
+    }
+}
+
 const SchedulinatorViewer = {
     metadata: null,
     elements: {
@@ -15,10 +24,13 @@ const SchedulinatorViewer = {
         },
         afterNavigationCallback: {
             all: function() {
-                SchedulinatorViewer.handleShowAllData();
+                if (SchedulinatorViewer.metadata !== null) {
+                    return SchedulinatorViewer.handleShowAllData();
+                }
+                ViewerHelper.show(document.getElementById('scheduleCodePrompt'));
             },
             editor: function() {
-                
+                ViewerHelper.hide(document.getElementById('scheduleCodePrompt'));
             }
         },
         to(page) {
@@ -26,9 +38,9 @@ const SchedulinatorViewer = {
                 return false;
             }
             Object.values(this.pagesElement).forEach(e => {
-                e.classList.add('d-none');
+                ViewerHelper.hide(e);
             });
-            document.getElementById(`page_${page}`).classList.remove('d-none');
+            ViewerHelper.show(document.getElementById(`page_${page}`));
 
             if (Object.keys(this.afterNavigationCallback).includes(page)) {
                 this.afterNavigationCallback[page]();
@@ -276,7 +288,7 @@ const SchedulinatorViewer = {
         this.run();
 
         form.code.classList.remove('is-invalid');
-        document.getElementById('scheduleCodePrompt').classList.add('d-none');
+        ViewerHelper.hide(document.getElementById('scheduleCodePrompt'))
         return false;
     },
     handleDateInput(form) {
@@ -286,7 +298,7 @@ const SchedulinatorViewer = {
         const futureElement = document.getElementById('tooFarFutureWarning');
         if (futureElement) {
             document.getElementById('fooFarFutureWarningDate').textContent = this.parseToReadableDate(Schedulinator.stringToDate(this.metadata.updated))
-            futureElement.classList.remove('d-none');
+            ViewerHelper.show(futureElement)
             futureElement.classList.add('show');
         }
         document.getElementById('navbar').classList.remove('show');
@@ -373,7 +385,7 @@ const SchedulinatorViewer = {
         // Handle metadata
         let meta = Schedulinator.getMetadata();
         if (!meta) {
-            document.getElementById('scheduleCodePrompt').classList.remove('d-none');
+            ViewerHelper.show(document.getElementById('scheduleCodePrompt'));
 
             // Get class code if present in URL
             let url = new URL(window.location.href);
@@ -384,6 +396,7 @@ const SchedulinatorViewer = {
                 this.handleScheduleCode(document.getElementById('classCodeForm'));
                 return;
             }
+            return false;
         }
         this.elements.metadata.innerHTML = this.renderMetadata(meta);
 
@@ -394,7 +407,7 @@ const SchedulinatorViewer = {
         this.navigation.to('today');
 
         // TODO: TEMPORARY. PLEASE REMOVE
-        //this.navigation.to('editor');
+        this.navigation.to('editor');
     }
 }
 

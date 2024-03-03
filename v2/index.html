@@ -10,6 +10,7 @@
     <body class="h-100">
         <main class="flex-shrink-0">
             <div class="container">
+                <!-- Navbar -->
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="#"><img src="https://i.ibb.co/dG1TtgY/logo.png" height="50" class="d-inline-block align-text-top" loading="lazy"></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -31,6 +32,9 @@
                         </div>
                     </div>
                 </nav>
+                <!-- end Navbar -->
+
+                <!-- Schedule Code Prompt -->
                 <div class="row sticky-top text-center mb-3 header-row">
                     <div class="col-12">
                         <div class="container-fluid">
@@ -48,6 +52,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- end Schedule Code Prompt -->
+
+                <!-- Accuraccy Notice -->
                 <div class="alert alert-warning alert-dismissible fade d-none" id="tooFarFutureWarning">
                     <p class="mb-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
@@ -56,6 +63,7 @@
                         <b>POTENSI TIDAK AKURAT</b><br>Data di masa depan atau libur yang belum diumumkan dapat menyebabkan data tidak sesuai. Tanggal pembaharuan data:<b><span id="fooFarFutureWarningDate"></span></b><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </p>
                 </div>
+                <!-- end Accuraccy Notice -->
 
                 <!-- Dashboard -->
                 <section id="page_today" class="d-none">
@@ -190,11 +198,66 @@
                 <section id="page_editor" class="d-none">
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <h2 class="text-center">Schedule Editor</h2>
                             <div class="card">
-                                <ul class="list-group list-group-flush text-center">
-                                    <li class="list-group-item bg-warning"><b class="font-larger">Regular Classes</b></li>
-                                </ul>
+                                <div class="card-header bg-danger text-center">
+                                    <b class="font-larger text-light">Schedule Editor (UNDER DEVELOPMENT)</b>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="progress" style="margin-bottom:5px; height: 20px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><b>STEP 1</b></div>
+                                    </div>
+
+                                    <!-- New Editor Session -->
+                                    <div id="editor_step_0" class="card mt-4">
+                                        <div class="card-header bg-warning text-center">
+                                            <b class="font-larger">Select Editor Options</b>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <button type="button" class="btn btn-success btn-lg">Create new schedule</button>
+                                            <button type="button" class="btn btn-primary btn-lg">Load existing schedule</button>
+                                        </div>
+                                    </div>
+                                    <!-- end New Editor Session -->
+
+                                    <!-- Import Schedule from MIKA -->
+                                    <div id="editor_step_1" class="card mt-4 d-none">
+                                        <div class="card-header bg-warning text-center">
+                                            <b class="font-larger">Import Schedule from MIKA</b>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mt-2">
+                                                <h5 class="card-title">Please make sure you have logged into <a href="https://mika.mikroskil.ac.id/" target="_blank">MIKA</a> before proceeding.</h5>
+                                                <p class="card-text">Once logged in, navigate to <a href="https://mika.mikroskil.ac.id/jadwal/kuliah/" target="_blank"><b>Info -> Jadwal -> Kuliah</b></a>, then select your class schedule and hit Filter.</p>
+                                            </div>
+                                            <hr>
+                                            <div class="mt-2">
+                                                <p class="card-text">Next, copy the following JavaScript code and paste it into the Console on MIKA (F12 to open Console).</p>
+                                                <textarea id="editor_step_1_exporter" class="form-control" rows="10">var $jscomp=$jscomp||{};$jscomp.scope={};$jscomp.createTemplateTagFirstArg=function(a){return a.raw=a};$jscomp.createTemplateTagFirstArgWithRaw=function(a,b){a.raw=b;return a};$jscomp.arrayIteratorImpl=function(a){var b=0;return function(){return b&lt;a.length?{done:!1,value:a[b++]}:{done:!0}}};$jscomp.arrayIterator=function(a){return{next:$jscomp.arrayIteratorImpl(a)}};$jscomp.makeIterator=function(a){var b="undefined"!=typeof Symbol&&Symbol.iterator&&a[Symbol.iterator];if(b)return b.call(a);if("number"==typeof a.length)return $jscomp.arrayIterator(a);throw Error(String(a)+" is not an iterable or ArrayLike");};$jscomp.arrayFromIterator=function(a){for(var b,c=[];!(b=a.next()).done;)c.push(b.value);return c};$jscomp.arrayFromIterable=function(a){return a instanceof Array?a:$jscomp.arrayFromIterator($jscomp.makeIterator(a))};var ExportMika={getInputByName:function(a){return document.querySelector("input[name="+a+"]")},getSelectorValueByName:function(a){a=document.getElementById(a);return a.options[a.selectedIndex].text},translateSemesterToInt:function(a){var b;return null!=(b={I:1,II:2,III:3,IV:4,V:5,VI:6,VII:7,VIII:8,IX:9,X:10,XI:11,XII:12}[a])?b:a},exportCurrent:function(){var a=document.getElementsByClassName("mika-table")[0],b=a.lastElementChild,c=[],h=[];[].concat($jscomp.arrayFromIterable(a.firstElementChild.firstElementChild.children)).forEach(function(d){c.push(d.textContent)});[].concat($jscomp.arrayFromIterable(b.children)).forEach(function(d){var e=[];[].concat($jscomp.arrayFromIterable(d.children)).forEach(function(f){e.push(f.textContent)});h.push(e)});var g=[];h.forEach(function(d){var e={};d.forEach(function(f,k){e[c[k].replaceAll(" ","_").toLowerCase()]=f});g.push(e)});a=this.getSelectorValueByName("peminatan").split(" - ");return{major:a[1],majorCode:a[0],"class":g[0].kelas.replaceAll(" ",""),semester:this.translateSemesterToInt(this.getSelectorValueByName("semester")),classes:g,academicYear:this.getInputByName("tahunAjaran").value}},exportCurrentToJson:function(){console.log(JSON.stringify(this.exportCurrent()))}};ExportMika.exportCurrentToJson();</textarea>
+                                                <button type="buton" class="btn btn-primary mt-1" onclick="(function(a){let copyText = document.getElementById('editor_step_1_exporter');copyText.select();copyText.setSelectionRange(0, 99999);navigator.clipboard.writeText(copyText.value);a.innerText += ' ✔️';})(this)">Copy to clipboard</button>
+                                            </div>
+                                            <hr>
+                                            <div class="mt-2">
+                                                <p class="card-text">It should give you an output in the console. Copy and paste that to the textarea below.</p>
+                                                <textarea id="editor_step_1_results" class="form-control" rows="10" required></textarea>
+                                                <button type="button" class="btn btn-primary mt-1">Next Step</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end Import Schedule from MIKA -->
+
+                                    <!-- Set Classes Locations -->
+                                    <div id="editor_step_0" class="card mt-4">
+                                        <div class="card-header bg-warning text-center">
+                                            <b class="font-larger">Set Classes Locations</b>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- end Set Classes Locations -->
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -219,6 +282,11 @@
         <footer class="footer mt-auto py-2 bg-light">
             <div class="container"><span class="text-muted"><small>Bukan situs resmi Mikroskil.<br>Informasi di sini hanya untuk penggunaan pribadi saya (pengembang). Tidak ada jaminan terkait kelengkapan, akurasi, atau ketersediaan informasi. Gunakan dengan risiko sendiri. Terima kasih.</small></span></div>
         </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script><script src="DefaultSchedule.js"></script><script src="Schedulinator.js"></script><script src="SchedulinatorViewer.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="DefaultSchedule.js"></script>
+        <script src="Schedulinator.js"></script>
+        <script src="SchedulinatorViewer.js"></script>
+        <script src="SchedulinatorEditor.js"></script>
+        <script src="SchedulinatorEditorViewer.js"></script>
     </body>
 </html>

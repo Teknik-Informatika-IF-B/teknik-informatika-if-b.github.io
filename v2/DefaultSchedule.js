@@ -1,7 +1,7 @@
 const DEFAULT_SCHEDULE = {
-    "S11-IFBSORE-2324": {
+    "1-IFBSORE-2324": {
         metadata: {
-            identifier: "S11-IFBSORE-2324", // In case we want to make it server-based
+            identifier: "1-IFBSORE-2324", // In case we want to make it server-based
             major: "S-1 / Teknik Informatika",
             class: "IF-B-SORE",
             start: "18-09-2023", // 18 Sept 2023
@@ -375,6 +375,155 @@ const DEFAULT_SCHEDULE = {
                     ],
                     location: 2,
                 },
+            ]
+        }
+    },
+    "2-IFBSORE-2324": {
+        metadata: {
+            identifier: "2-IFBSORE-2324", // In case we want to make it server-based
+            major: "S-1 / Teknik Informatika",
+            class: "IF-B-SORE",
+            start: "04-03-2024", // 4 Mar 2024
+            end: "04-09-2024", // 4 Sept 2024
+            semester: 2,
+            academicYear: "2023/2024",
+            updated: "17-01-2024"
+        },
+        schedules: {
+            regularClasses: [
+                /**
+                 * @property {string} subject Subject name
+                 * @property {int[]} day Day of the class (1 = Monday, 2 = Tuesday, so on)
+                 * @property {string} type Class type (REGULAR, REPLACEMENT, EXAM, HOLIDAY)
+                 * @property {object[]} time Hour and minute when the class starts
+                 * @property {int[]} location Where the class is being held (0 = Unknown, 1 = Onsite, 2 = Online)
+                 */
+                {
+                    subject: "Pengembangan Web Front-End",
+                    day: [1],
+                    type: "REGULAR",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:10",
+                            tolerance: "18:00",
+                        },
+                        {
+                            start: "19:30",
+                            end: "20:50",
+                            tolerance: "19:40",
+                        }
+                    ],
+                    location: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                },
+                {
+                    subject: "Pemodelan dan Implementasi Basis Data",
+                    day: [2],
+                    type: "REGULAR",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:10",
+                            tolerance: "18:00",
+                        },
+                        {
+                            start: "19:30",
+                            end: "20:50",
+                            tolerance: "19:40",
+                        }
+                    ],
+                    location: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                },
+                {
+                    subject: "Literasi Digital",
+                    day: [3],
+                    type: "REGULAR",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:05",
+                            tolerance: "18:00",
+                        },
+                    ],
+                    location: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                },
+                {
+                    subject: "Pengembangan Web Front-End",
+                    day: [3],
+                    type: "REGULAR",
+                    classroom: "A.P1/L4 - Lab 7",
+                    time: [
+                        {
+                            start: "19:20",
+                            end: "21:00",
+                            tolerance: "19:30",
+                        },
+                    ],
+                    location: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                },
+                {
+                    subject: "Pemikiran Komputasional TEORI",
+                    day: [4],
+                    type: "REGULAR",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:05",
+                            tolerance: "18:30",
+                        },
+                    ],
+                    location: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                },
+                {
+                    subject: "Pemikiran Komputasional PRAKTEK",
+                    day: [4],
+                    type: "REGULAR",
+                    classroom: "A.P2/L2 - Lab 2",
+                    time: [
+                        {
+                            start: "19:20",
+                            end: "21:00",
+                            tolerance: "19:30",
+                        },
+                    ],
+                    location: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                },
+                {
+                    subject: "Matematika Komputasi",
+                    day: [5],
+                    type: "REGULAR",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "20:50",
+                            tolerance: "18:00",
+                        },
+                    ],
+                    location: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                },
+            ],
+            events: [
+                {
+                    subject: "Istirahat",
+                    day: [1, 2, 3, 4, 5],
+                    type: "BREAK",
+                    time: [
+                        {
+                            start: "19:10",
+                            end: "19:30"
+                        }
+                    ],
+                }
+            ],
+            overrides: [
+                /**
+                 * Types: HOLIDAY, EXAM, REPLACEMENT (Kelas Pengganti)
+                 */
             ]
         }
     }
