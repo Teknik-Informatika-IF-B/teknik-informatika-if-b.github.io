@@ -399,7 +399,7 @@ const DEFAULT_SCHEDULE = {
                  * @property {int[]} location Where the class is being held (0 = Unknown, 1 = Onsite, 2 = Online)
                  */
                 {
-                    subject: "Pengembangan Web Front-End",
+                    subject: "Pengembangan Web Front-End TEORI",
                     day: [1],
                     type: "REGULAR",
                     classroom: "B.T3/L2",
@@ -451,7 +451,7 @@ const DEFAULT_SCHEDULE = {
                     location: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 },
                 {
-                    subject: "Pengembangan Web Front-End",
+                    subject: "Pengembangan Web Front-End PRAKTEK",
                     day: [3],
                     type: "REGULAR",
                     classroom: "A.P1/L4 - Lab 7",
