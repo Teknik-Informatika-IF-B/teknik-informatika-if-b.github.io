@@ -500,8 +500,13 @@ const DEFAULT_SCHEDULE = {
                     time: [
                         {
                             start: "17:45",
-                            end: "20:50",
+                            end: "19:05",
                             tolerance: "18:00",
+                        },
+                        {
+                            start: "19:30",
+                            end: "20:50",
+                            tolerance: "19:45",
                         },
                     ],
                     location: [1, 2, 1, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 1, 2, 1],
@@ -529,11 +534,6 @@ const DEFAULT_SCHEDULE = {
                     date: "11-03-2024",
                     type: "HOLIDAY"
                 },
-                // {
-                //     subject: "Cuti Bersama Hari Suci Nyepi",
-                //     date: "12-03-2024",
-                //     type: "HOLIDAY"
-                // },
                 {
                     subject: "Wafat Isa Almasih",
                     date: "29-03-2024",
@@ -553,9 +553,45 @@ const DEFAULT_SCHEDULE = {
                     type: "HOLIDAY"
                 },
                 {
+                    subject: "Libur Bersama Idul Fitri",
+                    date: {
+                        start: "08-04-2024",
+                        end: "15-04-2024"
+                    },
+                    type: "HOLIDAY"
+                },
+                {
+                    subject: "Minggu Tenang",
+                    date: {
+                        start: "29-04-2024",
+                        end: "03-05-2024"
+                    },
+                    type: "HOLIDAY"
+                },
+                {
+                    subject: "Pengembangan Web Front-End TEORI",
+                    date: "29-04-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pengembangan Web Front-End TEORI",
+                    date: "30-04-2024",
+                    type: "REPLACEMENT",
+                },
+                {
                     subject: "Hari Buruh",
                     date: "01-05-2024",
                     type: "HOLIDAY"
+                },
+                {
+                    subject: "Pengembangan Web Front-End PRAKTEK",
+                    date: "02-05-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Matematika Komputasi",
+                    date: "03-05-2024",
+                    type: "REPLACEMENT",
                 },
                 {
                     subject: "Kenaikan Isa Almasih",
