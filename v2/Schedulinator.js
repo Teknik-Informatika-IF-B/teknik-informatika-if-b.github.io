@@ -322,10 +322,13 @@ const Schedulinator = {
         while (tries < maxDays) {
             let upcoming = this.getScheduleByDate(this.dateToString(date));
             if (upcoming) {
-                return {
-                    date: date,
-                    schedule: upcoming,
-                };
+                if (upcoming[0].type !== 'HOLIDAY') {
+                    // Return only non-holiday
+                    return {
+                        date: date,
+                        schedule: upcoming,
+                    };
+                }
             }
             date.setDate(date.getDate() + 1);
             tries++;
