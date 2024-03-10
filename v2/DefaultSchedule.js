@@ -569,6 +569,11 @@ const DEFAULT_SCHEDULE = {
                     type: "HOLIDAY"
                 },
                 {
+                    subject: "Pengembangan Web Front-End PRAKTEK",
+                    date: "03-04-2024",
+                    type: "NOSHOW",
+                },
+                {
                     subject: "Pengembangan Web Front-End TEORI",
                     date: "29-04-2024",
                     type: "REPLACEMENT",

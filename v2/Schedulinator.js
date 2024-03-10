@@ -181,17 +181,23 @@ const Schedulinator = {
         while (true) {
             const stringDate = this.dateToString(startingDate);
             const toPush = (function () {
-                let classesInDay = [];
+                let classesInDay = [],
+                    noShowInDay = [];
                 const classesToday = [];
                 let flag_hasOverrides = false;
 
                 if (overrideIndex[stringDate]) {
-                    overrideIndex[stringDate].forEach(o => {
-                        classesInDay.push({ ...o.details });
-                    })
-                    flag_hasOverrides = true;
-                } else {
                     // Specific overrides trumps over ranged overrides
+                    overrideIndex[stringDate].forEach(o => {
+                        if (o.details.type === 'NOSHOW') {
+                            // In case where there are 2 subjects in a day and one of them is a no-show
+                            noShowInDay.push(o.details.subject);
+                        } else {
+                            classesInDay.push({ ...o.details });
+                            flag_hasOverrides = true;
+                        }
+                    });
+                } else {
                     overrideIndex.ranged.forEach(o => {
                         const millis = startingDate.getTime();
                         if (millis <= o.end && millis >= o.start) {
@@ -215,6 +221,11 @@ const Schedulinator = {
                 let showBreaks = false;
                 classesInDay.forEach(c => {
                     let details = { ...c };
+
+                    if (noShowInDay.includes(details.subject)) {
+                        return;
+                    }
+
                     if (["REGULAR", "REPLACEMENT", "EXAM"].includes(details.type)) {
                         if (["REPLACEMENT", "EXAM"].includes(details.type)) {
                             details = { ...subjectIndex[details.subject], ...details };
