@@ -205,7 +205,7 @@
                                 <div class="card-body">
                                     <p class="card-text"></p>
                                     <div class="progress" style="margin-bottom:5px; height: 20px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><b>STEP 1</b></div>
+                                        <div id="editor_progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><b>STEP 1</b></div>
                                     </div>
 
                                     <!-- New Editor Session -->
@@ -214,14 +214,14 @@
                                             <b class="font-larger">Select Editor Options</b>
                                         </div>
                                         <div class="card-body text-center">
-                                            <button type="button" class="btn btn-success btn-lg mt-2">Create new schedule</button>
-                                            <button type="button" class="btn btn-primary btn-lg mt-2">Load existing schedule</button>
+                                            <button type="button" onclick="SchedulinatorEditorController.handleNewEditorStateSelect('new')" class="btn btn-success btn-lg mt-2">Create new schedule</button>
+                                            <button type="button" onclick="SchedulinatorEditorController.handleNewEditorStateSelect('load')" class="btn btn-primary btn-lg mt-2">Load existing schedule</button>
                                         </div>
                                     </div>
                                     <!-- end New Editor Session -->
 
                                     <!-- Import Schedule from MIKA -->
-                                    <div id="editor_step_1" class="card mt-4">
+                                    <div id="editor_new_step_1" class="card mt-4">
                                         <div class="card-header bg-warning text-center">
                                             <b class="font-larger">Import Schedule from MIKA</b>
                                         </div>
@@ -247,7 +247,7 @@
                                     <!-- end Import Schedule from MIKA -->
 
                                     <!-- Set Classes Locations -->
-                                    <div id="editor_step_2" class="card mt-4">
+                                    <div id="editor_new_step_2" class="card mt-4">
                                         <div class="card-header bg-warning text-center">
                                             <b class="font-larger">Set Classes Locations</b>
                                         </div>
@@ -343,6 +343,6 @@
         <script src="Schedulinator.js"></script>
         <script src="SchedulinatorViewer.js"></script>
         <script src="SchedulinatorEditor.js"></script>
-        <script src="SchedulinatorEditorViewer.js"></script>
+        <script src="SchedulinatorEditorController.js"></script>
     </body>
 </html>

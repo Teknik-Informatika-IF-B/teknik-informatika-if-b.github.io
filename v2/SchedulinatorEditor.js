@@ -28,7 +28,6 @@ const SchedulinatorEditor = {
 
             };
 
-
             const classCodeIndex = {};
             const regularClasses = [];
 
