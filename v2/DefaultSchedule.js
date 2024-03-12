@@ -387,7 +387,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "11-03-2024"
+            updated: "12-03-2024"
         },
         schedules: {
             regularClasses: [
@@ -448,7 +448,7 @@ const DEFAULT_SCHEDULE = {
                             tolerance: "18:00",
                         },
                     ],
-                    location: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    location: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 },
                 {
                     subject: "Pengembangan Web Front-End PRAKTEK",
