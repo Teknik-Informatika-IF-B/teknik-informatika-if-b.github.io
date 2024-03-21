@@ -1,7 +1,18 @@
 const SchedulinatorEditorController = {
     editor: {
+        start: {
+            steps: {
+                0: {
+                    element: document.getElementById('editor_step_0')
+                }
+            }
+        },
         new: {
-            steps: 5,
+            steps: {
+                0: {
+                    element: document.getElementById('')
+                }
+            },
             prefix: 'new_'
         },
         load: {

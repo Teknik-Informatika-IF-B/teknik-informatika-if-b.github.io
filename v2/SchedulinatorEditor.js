@@ -24,9 +24,7 @@ const SchedulinatorEditor = {
         },
         parseRegularClasses(data_from_mika, class_time_data = {}, class_location_data = {}) {
             data_from_mika = { "major": "Teknik Informatika", "majorCode": "111", "class": "IF-B", "semester": 2, "classes": [{ "hari": "Senin", "kode": "TI2134", "mata_kuliah": "Pengembangan Web Front-End", "kelas": "IF - B", "ruangan": "B.T3/L2", "pukul": "17:45 - 20:50", "sks": "4" }, { "hari": "Selasa", "kode": "TI2133", "mata_kuliah": "Pemodelan dan Implementasi Basis Data", "kelas": "IF - B", "ruangan": "B.T3/L2", "pukul": "17:45 - 20:50", "sks": "4" }, { "hari": "Rabu", "kode": "TI2111", "mata_kuliah": "Literasi Digital", "kelas": "IF - B", "ruangan": "B.T3/L2", "pukul": "17:45 - 19:05", "sks": "2" }, { "hari": "Rabu", "kode": "TI2134", "mata_kuliah": "Pengembangan Web Front-End", "kelas": "IF - B", "ruangan": "A.P1/L4 - Lab 7", "pukul": "19:20 - 21:00", "sks": "2" }, { "hari": "Kamis", "kode": "IF2103", "mata_kuliah": "Pemikiran Komputasional", "kelas": "IF - B", "ruangan": "B.T3/L2", "pukul": "17:45 - 19:05", "sks": "2" }, { "hari": "Kamis", "kode": "IF2103", "mata_kuliah": "Pemikiran Komputasional", "kelas": "IF - B", "ruangan": "A.P2/L2 - Lab 2", "pukul": "19:20 - 21:00", "sks": "2" }, { "hari": "Jumat", "kode": "IF2104", "mata_kuliah": "Matematika Komputasi", "kelas": "IF - B", "ruangan": "B.T3/L2", "pukul": "17:45 - 20:50", "sks": "4" }], "academicYear": "2023/2024" };
-            class_location_data = {
-
-            };
+            class_location_data = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1,};
 
             const classCodeIndex = {};
             const regularClasses = [];
@@ -62,6 +60,7 @@ const SchedulinatorEditor = {
                     }
 
                     // We are looking for class code in this case because praktek is always offline
+                    debugger;
                     if (c.mata_kuliah.contains(' PRAKTEK')) {
                         toPush['location'] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
                     } else if (Object.keys(class_location_data).includes(c.kode)) {
