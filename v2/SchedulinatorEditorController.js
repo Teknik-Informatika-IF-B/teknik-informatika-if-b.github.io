@@ -1,10 +1,18 @@
 const SchedulinatorEditorController = {
-    editor: {
+    state: {
+        type: null,
+        step: 0,
+        prefix: '',
+        cache: {
+            allElements: []
+        }
+    },
+    editorElements: {
         start: document.getElementById('editor_step_0'),
         new: {
+            stepCount: 5,
             steps: {
                 1: {
-                    element: document.getElementById(''),
                     callback: function() {
                         
                     }
@@ -17,19 +25,24 @@ const SchedulinatorEditorController = {
             prefix: 'load_'
         }
     },
-    state: {
-        type: null,
-        step: 0,
-        prefix: '',
-    },
-    helper: {
-        showElementStep(step) {
-            // Hide the others
-        }
-    },
-    handleNewEditorStateSelect(type) {
-        this.state.type = type;
-
+    editor: {
+        handleNewEditorStateSelect(type) {
+            this.state.type = type;
+    
+        },
+        showStep(type, step) {
+            if (!Object.keys(this.editor[type]).includes(step)) {
+                return false;
+            }
+            Object.values(this.pagesElement).forEach(e => {
+                ViewerHelper.hide(e);
+            });
+            ViewerHelper.show(document.getElementById(`page_${page}`));
+    
+            if (Object.keys(this.afterNavigationCallback).includes(page)) {
+                this.afterNavigationCallback[page]();
+            }
+        },
     },
     updateProgressBar(step, max_step, message = null) {
         let percentage = ((step / max_step) * 100).toFixed(2),
@@ -38,20 +51,7 @@ const SchedulinatorEditorController = {
         bar.setAttribute('aria-valuenow', percentage);
         bar.innerHTML = `<b>${(message == null) ? `STEP ${step}` : message }</b>`;
     },
-    showStep(type, step) {
-        if (!Object.keys(this.editor[type]).includes(step)) {
-            return false;
-        }
-        Object.values(this.pagesElement).forEach(e => {
-            ViewerHelper.hide(e);
-        });
-        ViewerHelper.show(document.getElementById(`page_${page}`));
-
-        if (Object.keys(this.afterNavigationCallback).includes(page)) {
-            this.afterNavigationCallback[page]();
-        }
-    },
     init() {
-        
+
     }
 }
