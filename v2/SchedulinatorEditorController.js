@@ -1,16 +1,13 @@
 const SchedulinatorEditorController = {
     editor: {
-        start: {
-            steps: {
-                0: {
-                    element: document.getElementById('editor_step_0')
-                }
-            }
-        },
+        start: document.getElementById('editor_step_0'),
         new: {
             steps: {
-                0: {
-                    element: document.getElementById('')
+                1: {
+                    element: document.getElementById(''),
+                    callback: function() {
+                        
+                    }
                 }
             },
             prefix: 'new_'
@@ -40,6 +37,19 @@ const SchedulinatorEditorController = {
         bar.style.width = `${percentage}%`;
         bar.setAttribute('aria-valuenow', percentage);
         bar.innerHTML = `<b>${(message == null) ? `STEP ${step}` : message }</b>`;
+    },
+    showStep(type, step) {
+        if (!Object.keys(this.editor[type]).includes(step)) {
+            return false;
+        }
+        Object.values(this.pagesElement).forEach(e => {
+            ViewerHelper.hide(e);
+        });
+        ViewerHelper.show(document.getElementById(`page_${page}`));
+
+        if (Object.keys(this.afterNavigationCallback).includes(page)) {
+            this.afterNavigationCallback[page]();
+        }
     },
     init() {
         
