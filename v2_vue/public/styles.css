@@ -1,0 +1,58 @@
+/* see https://github.com/GoogleChromeLabs/dark-mode-toggle */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.ayaka {
+    background-image: url(https://pbs.twimg.com/media/FGNQibaXIAMntCK?format=jpg&name=large);
+    /* https://i.ibb.co/fkh4xjq/lyw9zy7a05471.webp */
+    background-repeat: repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.ayaka .card {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.bg-grey {
+    background-color: #708090;
+}
+
+.card {
+    border-radius: 7px;
+    border: none;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.45);
+    overflow: hidden;
+
+    backdrop-filter: blur(15px);
+}
+
+.mb-3-notlast:not(:last-child) {
+    margin-bottom: 1rem!important;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.header-row {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.font-x-large {
+    font-size: x-large;
+}
+
+.font-larger {
+    font-size: larger;
+}
+
+th:first-child, td:first-child
+{
+    position: sticky;
+    left: 0px;
+}
