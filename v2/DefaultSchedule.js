@@ -1,3 +1,6 @@
+/**
+ * TODO: Place overrides in a common place for common holidays
+ */
 const DEFAULT_SCHEDULE = {
     "1-IFBSORE-2324": {
         metadata: {
@@ -387,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "17-03-2024"
+            updated: "30-04-2024"
         },
         schedules: {
             regularClasses: [
@@ -582,6 +585,7 @@ const DEFAULT_SCHEDULE = {
                     subject: "Pengembangan Web Front-End TEORI",
                     date: "30-04-2024",
                     type: "REPLACEMENT",
+                    classroom: "C.T6/L3",
                 },
                 {
                     subject: "Hari Buruh",
@@ -592,11 +596,110 @@ const DEFAULT_SCHEDULE = {
                     subject: "Pengembangan Web Front-End PRAKTEK",
                     date: "02-05-2024",
                     type: "REPLACEMENT",
+                    classroom: "A.P1/L4",
                 },
                 {
                     subject: "Matematika Komputasi",
                     date: "03-05-2024",
                     type: "REPLACEMENT",
+                },
+                {
+                    subject: "Matematika Komputasi",
+                    examType: "UTS",
+                    date: "06-05-2024",
+                    type: "EXAM",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:05"
+                        }
+                    ],
+                    location: 1,
+                },
+                {
+                    subject: "Pemikiran Komputasional TEORI",
+                    examType: "UTS",
+                    date: "07-05-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "17:30",
+                            end: "19:10"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pemikiran Komputasional PRAKTEK",
+                    examType: "UTS",
+                    date: "07-05-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "17:30",
+                            end: "19:10"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pemodelan dan Implementasi Basis Data",
+                    examType: "UTS",
+                    date: "08-05-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:05"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pengembangan Web Front-End TEORI",
+                    examType: "UTS",
+                    date: "08-05-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "19:20",
+                            end: "21:00"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pengembangan Web Front-End PRAKTEK",
+                    examType: "UTS",
+                    date: "08-05-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "19:20",
+                            end: "21:00"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Literasi Digital",
+                    examType: "UTS",
+                    date: "10-05-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "19:20",
+                            end: "21:00"
+                        }
+                    ],
+                    location: 1,
                 },
                 {
                     subject: "Kenaikan Isa Almasih",
