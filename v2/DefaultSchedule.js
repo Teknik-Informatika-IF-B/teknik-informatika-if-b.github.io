@@ -390,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "30-04-2024"
+            updated: "15-05-2024"
         },
         schedules: {
             regularClasses: [
@@ -705,6 +705,16 @@ const DEFAULT_SCHEDULE = {
                     subject: "Kenaikan Isa Almasih",
                     date: "09-05-2024",
                     type: "HOLIDAY"
+                },
+                {
+                    subject: "Pemodelan dan Implementasi Basis Data",
+                    date: "14-05-2024",
+                    type: "NOSHOW",
+                },
+                {
+                    subject: "Pengembangan Web Front-End PRAKTEK",
+                    date: "15-05-2024",
+                    type: "NOSHOW",
                 },
                 {
                     subject: "Hari Raya Waisak",
