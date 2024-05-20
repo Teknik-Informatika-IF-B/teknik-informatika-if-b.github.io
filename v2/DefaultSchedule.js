@@ -390,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "15-05-2024"
+            updated: "20-05-2024"
         },
         schedules: {
             regularClasses: [
@@ -714,6 +714,16 @@ const DEFAULT_SCHEDULE = {
                 {
                     subject: "Pengembangan Web Front-End PRAKTEK",
                     date: "15-05-2024",
+                    type: "NOSHOW",
+                },
+                {
+                    subject: "Pengembangan Web Front-End TEORI",
+                    date: "20-05-2024",
+                    type: "NOSHOW",
+                },
+                {
+                    subject: "Pemodelan dan Implementasi Basis Data",
+                    date: "21-05-2024",
                     type: "NOSHOW",
                 },
                 {
