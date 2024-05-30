@@ -747,6 +747,16 @@ const DEFAULT_SCHEDULE = {
                     type: "HOLIDAY"
                 },
                 {
+                    subject: "Pemikiran Komputasional TEORI",
+                    date: "11-07-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pemikiran Komputasional PRAKTEK",
+                    date: "11-07-2024",
+                    type: "REPLACEMENT",
+                },
+                {
                     subject: "Hari Kemerdekaan RI",
                     date: "17-08-2024",
                     type: "HOLIDAY"
