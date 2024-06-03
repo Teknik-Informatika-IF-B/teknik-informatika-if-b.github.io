@@ -748,12 +748,12 @@ const DEFAULT_SCHEDULE = {
                 },
                 {
                     subject: "Pemikiran Komputasional TEORI",
-                    date: "11-07-2024",
+                    date: "04-07-2024",
                     type: "REPLACEMENT",
                 },
                 {
                     subject: "Pemikiran Komputasional PRAKTEK",
-                    date: "11-07-2024",
+                    date: "04-07-2024",
                     type: "REPLACEMENT",
                 },
                 {
