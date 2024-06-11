@@ -390,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "20-05-2024"
+            updated: "11-06-2024"
         },
         schedules: {
             regularClasses: [
@@ -752,8 +752,18 @@ const DEFAULT_SCHEDULE = {
                     type: "REPLACEMENT",
                 },
                 {
+                    subject: "Pemodelan dan Implementasi Basis Data",
+                    date: "02-07-2024",
+                    type: "REPLACEMENT",
+                },
+                {
                     subject: "Pemikiran Komputasional PRAKTEK",
                     date: "04-07-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pemodelan dan Implementasi Basis Data",
+                    date: "05-07-2024",
                     type: "REPLACEMENT",
                 },
                 {
