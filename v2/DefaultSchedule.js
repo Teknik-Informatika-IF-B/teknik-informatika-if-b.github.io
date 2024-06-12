@@ -390,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "11-06-2024"
+            updated: "12-06-2024"
         },
         schedules: {
             regularClasses: [
@@ -735,6 +735,11 @@ const DEFAULT_SCHEDULE = {
                     subject: "Hari Lahir Pancasila",
                     date: "01-06-2024",
                     type: "HOLIDAY"
+                },
+                {
+                    subject: "Literasi Digital",
+                    date: "12-06-2024",
+                    type: "NOSHOW",
                 },
                 {
                     subject: "Hari Raya Idul Adha",
