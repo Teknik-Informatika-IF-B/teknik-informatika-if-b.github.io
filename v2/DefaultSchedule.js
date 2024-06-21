@@ -390,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "12-06-2024"
+            updated: "20-06-2024-1"
         },
         schedules: {
             regularClasses: [
@@ -770,6 +770,104 @@ const DEFAULT_SCHEDULE = {
                     subject: "Pemodelan dan Implementasi Basis Data",
                     date: "05-07-2024",
                     type: "REPLACEMENT",
+                },
+                {
+                    subject: "Matematika Komputasi",
+                    examType: "UAS",
+                    date: "08-07-2024",
+                    type: "EXAM",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:05"
+                        }
+                    ],
+                    location: 1,
+                },
+                {
+                    subject: "Literasi Digital",
+                    examType: "UAS",
+                    date: "09-07-2024",
+                    type: "EXAM",
+                    classroom: "B.T3/L2",
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:05"
+                        }
+                    ],
+                    location: 1,
+                },
+                {
+                    subject: "Pemikiran Komputasional TEORI",
+                    examType: "UAS",
+                    date: "11-07-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "17:30",
+                            end: "19:10"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pemikiran Komputasional PRAKTEK",
+                    examType: "UAS",
+                    date: "11-07-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "17:30",
+                            end: "19:10"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pemodelan dan Implementasi Basis Data",
+                    examType: "UAS",
+                    date: "12-07-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "17:45",
+                            end: "19:05"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pengembangan Web Front-End TEORI",
+                    examType: "UAS",
+                    date: "12-07-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "19:20",
+                            end: "21:00"
+                        }
+                    ],
+                    location: 2,
+                },
+                {
+                    subject: "Pengembangan Web Front-End PRAKTEK",
+                    examType: "UAS",
+                    date: "12-07-2024",
+                    type: "EXAM",
+                    classroom: null,
+                    time: [
+                        {
+                            start: "19:20",
+                            end: "21:00"
+                        }
+                    ],
+                    location: 2,
                 },
                 {
                     subject: "Hari Kemerdekaan RI",
