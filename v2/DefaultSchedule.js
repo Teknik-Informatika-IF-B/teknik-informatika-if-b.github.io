@@ -390,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "20-06-2024-1"
+            updated: "22-06-2024-2"
         },
         schedules: {
             regularClasses: [
@@ -752,13 +752,31 @@ const DEFAULT_SCHEDULE = {
                     type: "HOLIDAY"
                 },
                 {
-                    subject: "Pemikiran Komputasional TEORI",
-                    date: "04-07-2024",
+                    subject: "Minggu Tenang",
+                    date: {
+                        start: "01-07-2024",
+                        end: "05-07-2024"
+                    },
+                    type: "HOLIDAY"
+                },
+                {
+                    subject: "Pengembangan Web Front-End TEORI",
+                    date: "01-07-2024",
                     type: "REPLACEMENT",
                 },
                 {
                     subject: "Pemodelan dan Implementasi Basis Data",
                     date: "02-07-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pengembangan Web Front-End TEORI",
+                    date: "03-07-2024",
+                    type: "REPLACEMENT",
+                },
+                {
+                    subject: "Pemikiran Komputasional TEORI",
+                    date: "04-07-2024",
                     type: "REPLACEMENT",
                 },
                 {
@@ -770,6 +788,14 @@ const DEFAULT_SCHEDULE = {
                     subject: "Pemodelan dan Implementasi Basis Data",
                     date: "05-07-2024",
                     type: "REPLACEMENT",
+                },
+                {
+                    subject: "Masa Ujian",
+                    date: {
+                        start: "08-07-2024",
+                        end: "12-07-2024"
+                    },
+                    type: "HOLIDAY"
                 },
                 {
                     subject: "Matematika Komputasi",
