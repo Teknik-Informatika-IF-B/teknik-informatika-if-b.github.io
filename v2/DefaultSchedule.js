@@ -390,7 +390,7 @@ const DEFAULT_SCHEDULE = {
             end: "04-09-2024", // 4 Sept 2024
             semester: 2,
             academicYear: "2023/2024",
-            updated: "25-06-2024"
+            updated: "02-07-2024"
         },
         schedules: {
             regularClasses: [
@@ -779,9 +779,16 @@ const DEFAULT_SCHEDULE = {
                     subject: "Pemodelan dan Implementasi Basis Data",
                     date: "02-07-2024",
                     type: "REPLACEMENT",
+                    classroom: "B.T1/L2",
                 },
                 {
-                    subject: "Pengembangan Web Front-End TEORI",
+                    subject: "Literasi Digital",
+                    date: "03-07-2024",
+                    type: "REPLACEMENT",
+                    classroom: "B.T4/L2",
+                },
+                {
+                    subject: "Pengembangan Web Front-End PRAKTEK",
                     date: "03-07-2024",
                     type: "REPLACEMENT",
                 },
